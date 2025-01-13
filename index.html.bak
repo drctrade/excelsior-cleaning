@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Servicios profesionales de limpieza en Bucaramanga. Limpieza residencial y comercial de alta calidad. Professional cleaning services in Bucaramanga.">
+    <meta name="keywords" content="limpieza bucaramanga, cleaning services bucaramanga, servicio de aseo, limpieza profesional, limpieza residencial, limpieza comercial, aseo de oficinas, cleaning company colombia">
+    <title>Excelsior Cleaning Services - Servicios Profesionales de Limpieza en Bucaramanga</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <img src="Logo.png" alt="Excelsior Cleaning Services Logo" width="150">
+            </a>
+            <div class="nav-links">
+                <a href="#inicio" class="nav-link" data-es="Inicio" data-en="Home">Inicio</a>
+                <a href="#servicios" class="nav-link" data-es="Servicios" data-en="Services">Servicios</a>
+                <a href="#nosotros" class="nav-link" data-es="Nosotros" data-en="About">Nosotros</a>
+                <a href="#contacto" class="nav-link" data-es="Contacto" data-en="Contact">Contacto</a>
+                <button class="lang-toggle" onclick="toggleLanguage()">EN</button>
+            </div>
+            <div class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title" data-es="Servicios Profesionales de Limpieza" data-en="Professional Cleaning Services">Servicios Profesionales de Limpieza</h1>
+            <p class="hero-subtitle" data-es="Calidad y Excelencia en cada detalle" data-en="Quality and Excellence in every detail">Calidad y Excelencia en cada detalle</p>
+            <a href="https://wa.me/573011652120" class="cta-button" data-es="Cotización Gratis" data-en="Free Quote">Cotización Gratis</a>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="servicios" class="services">
+        <h2 class="section-title" data-es="Nuestros Servicios" data-en="Our Services">Nuestros Servicios</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <img src="images/residential.jpg" alt="Limpieza Residencial">
+                <h3 data-es="Limpieza Residencial" data-en="Residential Cleaning">Limpieza Residencial</h3>
+                <p data-es="Servicio profesional para hogares, adaptado a sus necesidades específicas." data-en="Professional home cleaning service, tailored to your specific needs.">Servicio profesional para hogares, adaptado a sus necesidades específicas.</p>
+            </div>
+            <!-- More service cards... -->
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="nosotros" class="about">
+        <div class="about-content">
+            <h2 class="section-title" data-es="Sobre Nosotros" data-en="About Us">Sobre Nosotros</h2>
+            <p data-es="Excelsior Cleaning Services es su socio confiable en servicios de limpieza profesional en Bucaramanga." data-en="Excelsior Cleaning Services is your trusted partner in professional cleaning services in Bucaramanga.">Excelsior Cleaning Services es su socio confiable en servicios de limpieza profesional en Bucaramanga.</p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="contact">
+        <h2 class="section-title" data-es="Contáctenos" data-en="Contact Us">Contáctenos</h2>
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3 data-es="Información de Contacto" data-en="Contact Information">Información de Contacto</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Carrera 38 # 31-133 casa Esquinera, Cabecera, Bucaramanga, Colombia</p>
+                <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/573011652120">+57 301 165 2120</a></p>
+            </div>
+            <div class="whatsapp-qr">
+                <img src="images/whatsapp-qr.png" alt="WhatsApp QR Code">
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 Excelsior Cleaning Services. <span data-es="Todos los derechos reservados." data-en="All rights reserved.">Todos los derechos reservados.</span></p>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/573011652120" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script src="script.js"></script>
+</body>
+</html>

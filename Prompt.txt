@@ -1,0 +1,58 @@
+Create a fully functional bilingual website, a one pager, 
+like a landing page, for Excelsior Cleaning Services with 
+the following specifications:
+
+1. Language Support:
+   - Default language: Spanish
+   - Secondary language: English
+   - Implement language toggle functionality
+
+2. Design Requirements:
+- Color palette: Vibrant blue (#0077B6) and green (#00B74A)
+- Layout inspiration: www.colombiaclean.com (modern, clean, professional)
+                     also use the same texts and services, rewrite them to 
+                     make them unique to avoid plagiarism.
+- Logo placement: Top-left corner of navigation bar (PNG format, 500x500px, transparent background)
+- Image requirements: You can modify these requirements, if needed. Use royalties
+                      free images, to avoid copyrighting violation.
+  * Hero section: 1920x1080px (landscape)
+  * Service cards: 800x600px (portrait)
+  * Team photos: 500x500px (square)
+  * Gallery: 1200x800px (landscape)
+
+3. Company Information:
+- Name: Excelsior Cleaning Services
+- Address: Carrera 38 # 31-133 casa Esquinera, Cabecera, Bucaramanga, Colombia
+- WhatsApp integration:
+  * Clickable QR code (300x300px)
+  * Floating chat button (bottom-right corner)
+  * Direct link: wa.me/573011652120
+
+4. Technical Requirements:
+- Framework: Webflow (no-code platform)
+- Hosting: Netlify (provide detailed deployment instructions including 
+                    DNS setup to connect own domain)
+- Mobile responsiveness: Must pass Google Mobile-Friendly Test
+- Performance: Achieve Lighthouse score of 90+ for performance
+- Meta tags: Set up the proper meta tags, title and description
+             to push SEO for the website.
+- Niche Keywords: Insert and use most keywords in the Cleaning niche
+                  to help the website ranks higher on all search
+                  engine platforms, specially in Bucaramanga, Colombia
+                  area.
+
+5. Deliverables:
+   - Complete website template with all required sections
+   - Detailed implementation guide for non-coders
+     * Content updates
+  * Image replacement
+  * Deployment process
+   - Asset checklist (images, logo, etc.) with specifications
+   - - Testing checklist covering:
+  * Cross-browser compatibility
+  * Mobile responsiveness
+  * Form functionality
+  * Language switching
+
+
+
