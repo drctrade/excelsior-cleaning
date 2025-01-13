@@ -251,28 +251,43 @@
                 <div class="col-lg-6">
                     <div class="contact-form">
                         <h2 data-es="Solicitar Cotización" data-en="Request a Quote">Solicitar Cotización</h2>
-                        <form id="quoteForm">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Nombre" data-en-placeholder="Name" required>
+                        <form name="contact" method="POST" action="/success" netlify>
+                            <input type="hidden" name="form-name" value="contact">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="text" name="name" class="form-control" placeholder="Nombre / Name" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="email" name="email" class="form-control" placeholder="Email" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="tel" name="phone" class="form-control" placeholder="Teléfono / Phone" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <select name="service" class="form-control" required>
+                                            <option value="">Seleccione un servicio / Select a service</option>
+                                            <option value="residential">Limpieza Residencial / Residential Cleaning</option>
+                                            <option value="office">Limpieza de Oficina / Office Cleaning</option>
+                                            <option value="commercial">Limpieza Comercial / Commercial Cleaning</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <textarea name="message" class="form-control" placeholder="Mensaje / Message" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <button type="submit" class="pp-btn">Enviar / Send</button>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <input type="email" class="form-control" placeholder="Email" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="tel" class="form-control" placeholder="Teléfono" data-en-placeholder="Phone" required>
-                            </div>
-                            <div class="form-group">
-                                <select class="form-control" required>
-                                    <option value="" data-es="Seleccionar Servicio" data-en="Select Service">Seleccionar Servicio</option>
-                                    <option value="residential" data-es="Limpieza Residencial" data-en="Residential Cleaning">Limpieza Residencial</option>
-                                    <option value="office" data-es="Limpieza de Oficinas" data-en="Office Cleaning">Limpieza de Oficinas</option>
-                                    <option value="commercial" data-es="Limpieza Comercial" data-en="Commercial Cleaning">Limpieza Comercial</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <textarea class="form-control" rows="4" placeholder="Mensaje" data-en-placeholder="Message"></textarea>
-                            </div>
-                            <button type="submit" class="pp-btn" data-es="Enviar Solicitud" data-en="Send Request">Enviar Solicitud</button>
                         </form>
                     </div>
                 </div>
