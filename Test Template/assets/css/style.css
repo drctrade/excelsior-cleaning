@@ -489,6 +489,54 @@ body {
     text-align: center;
 }
 
+/* Legal Links */
+.legal-links {
+    margin: 20px 0;
+}
+
+.legal-links a {
+    color: var(--primary-color);
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.legal-links a:hover {
+    text-decoration: underline;
+}
+
+/* Modal Styles */
+.modal-content {
+    border-radius: 8px;
+}
+
+.modal-header {
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 8px 8px 0 0;
+}
+
+.modal-header .close {
+    color: white;
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.modal-body h4 {
+    color: var(--primary-color);
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.modal-body ul {
+    padding-left: 20px;
+}
+
+.modal-body li {
+    margin-bottom: 0.5rem;
+}
+
 /* Responsive Design */
 @media (max-width: 991px) {
     .pp-toggle-btn {
