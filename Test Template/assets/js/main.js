@@ -14,41 +14,56 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Update button text
             this.textContent = newLang === 'es' ? 'EN' : 'ES';
+
+            // Update calendar locale if it exists
+            if (window.calendar) {
+                window.calendar.setOption('locale', newLang);
+            }
         });
     }
 
-    // Initialize FullCalendar
-    var calendarEl = document.getElementById('booking-calendar');
+    // Initialize Calendar
+    const calendarEl = document.getElementById('booking-calendar');
     if (calendarEl) {
-        var calendar = new FullCalendar.Calendar(calendarEl, {
+        window.calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
                 right: 'dayGridMonth'
             },
-            locale: 'es', // Default to Spanish
+            locale: document.documentElement.getAttribute('lang') || 'es',
             selectable: true,
             selectMirror: true,
             select: function(info) {
                 const dateInput = document.getElementById('selected-date');
                 if (dateInput) {
-                    const formattedDate = info.start.toLocaleDateString('es-ES', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                    });
-                    dateInput.value = formattedDate;
+                    const date = new Date(info.start);
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+
+                    if (date < today) {
+                        alert('Por favor seleccione una fecha futura.');
+                        return;
+                    }
+
+                    const locale = document.documentElement.getAttribute('lang') || 'es';
+                    const options = { 
+                        weekday: 'long', 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    };
+                    dateInput.value = date.toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-US', options);
                 }
             },
-            selectConstraint: {
-                start: new Date().toISOString().split('T')[0] // Only allow selecting current or future dates
-            },
-            validRange: {
-                start: new Date().toISOString().split('T')[0] // Disable past dates
+            validRange: function(nowDate) {
+                return {
+                    start: nowDate
+                };
             }
         });
-        calendar.render();
+        window.calendar.render();
     }
 
     // Form submission handling
@@ -70,6 +85,9 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(() => {
                 alert('¡Solicitud enviada con éxito! Nos pondremos en contacto pronto.');
                 bookingForm.reset();
+                if (window.calendar) {
+                    window.calendar.unselect();
+                }
             })
             .catch((error) => {
                 console.error('Error:', error);
