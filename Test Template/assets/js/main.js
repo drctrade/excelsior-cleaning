@@ -3,29 +3,103 @@ document.addEventListener('DOMContentLoaded', function() {
     const languageBtn = document.querySelector('.language-btn');
     if (languageBtn) {
         languageBtn.addEventListener('click', function() {
+            // Get current language
             const currentLang = document.documentElement.getAttribute('lang') || 'es';
             const newLang = currentLang === 'es' ? 'en' : 'es';
+            
+            // Update HTML lang attribute
             document.documentElement.setAttribute('lang', newLang);
             
             // Update all elements with data-es and data-en attributes
             document.querySelectorAll('[data-es][data-en]').forEach(element => {
-                element.textContent = element.getAttribute(`data-${newLang}`);
+                const newText = element.getAttribute(`data-${newLang}`);
+                if (newText) {
+                    if (element.tagName.toLowerCase() === 'input' && element.type === 'submit') {
+                        element.value = newText;
+                    } else if (element.tagName.toLowerCase() === 'input' && element.type === 'placeholder') {
+                        element.placeholder = newText;
+                    } else {
+                        element.textContent = newText;
+                    }
+                }
             });
 
             // Update button text
             this.textContent = newLang === 'es' ? 'EN' : 'ES';
 
             // Update calendar locale if it exists
-            if (window.calendar) {
-                window.calendar.setOption('locale', newLang);
+            if (window.bookingCalendar) {
+                window.bookingCalendar.setOption('locale', newLang);
             }
+
+            // Save language preference
+            localStorage.setItem('preferredLanguage', newLang);
+        });
+
+        // Set initial language from localStorage
+        const savedLang = localStorage.getItem('preferredLanguage');
+        if (savedLang) {
+            languageBtn.click();
+        }
+    }
+
+    // Mobile Menu Toggle
+    const toggleBtn = document.querySelector('.pp-toggle-btn');
+    const navbarMenu = document.querySelector('.pp-navbar-menu');
+    
+    if (toggleBtn && navbarMenu) {
+        toggleBtn.addEventListener('click', function() {
+            navbarMenu.classList.toggle('active');
+            this.classList.toggle('active');
+        });
+    }
+
+    // Smooth scrolling for all anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+                
+                // Close mobile menu if open
+                if (navbarMenu && navbarMenu.classList.contains('active')) {
+                    navbarMenu.classList.remove('active');
+                    toggleBtn.classList.remove('active');
+                }
+            }
+        });
+    });
+
+    // Initialize Swiper for testimonials if exists
+    const testimonialsSwiper = document.querySelector('.testimonials-slider');
+    if (testimonialsSwiper) {
+        new Swiper(testimonialsSwiper, {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            loop: true,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+            },
         });
     }
 
     // Initialize Calendar
     const calendarEl = document.getElementById('booking-calendar');
     if (calendarEl) {
-        window.calendar = new FullCalendar.Calendar(calendarEl, {
+        window.bookingCalendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             headerToolbar: {
                 left: 'prev,next today',
@@ -63,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 };
             }
         });
-        window.calendar.render();
+        window.bookingCalendar.render();
     }
 
     // Form submission handling
@@ -85,8 +159,8 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(() => {
                 alert('¡Solicitud enviada con éxito! Nos pondremos en contacto pronto.');
                 bookingForm.reset();
-                if (window.calendar) {
-                    window.calendar.unselect();
+                if (window.bookingCalendar) {
+                    window.bookingCalendar.unselect();
                 }
             })
             .catch((error) => {
