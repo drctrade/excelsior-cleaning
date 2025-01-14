@@ -287,43 +287,73 @@ Excelsior Cleaning Services: La limpieza profesional llevada a la perfección</p
                 <div class="col-lg-6">
                     <div class="contact-form">
                         <h2 data-es="Solicitar Cotización" data-en="Request a Quote">Solicitar Cotización</h2>
-                        <form name="contact" method="POST" action="/success" netlify>
-                            <input type="hidden" name="form-name" value="contact">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <input type="text" name="name" class="form-control" placeholder="Nombre / Name" required>
-                                    </div>
+                        <form id="booking-form" name="booking" method="POST" data-netlify="true">
+                            <input type="hidden" name="form-name" value="booking">
+                            <div class="form-group mb-3">
+                                <label data-es="Tipo de Servicio" data-en="Service Type">Tipo de Servicio</label>
+                                <select name="service-type" class="form-control" required>
+                                    <option value="" data-es="Seleccione un servicio" data-en="Select a service">Seleccione un servicio</option>
+                                    <option value="residential" data-es="Limpieza Residencial" data-en="Residential Cleaning">Limpieza Residencial</option>
+                                    <option value="commercial" data-es="Limpieza Comercial" data-en="Commercial Cleaning">Limpieza Comercial</option>
+                                    <option value="office" data-es="Limpieza de Oficinas" data-en="Office Cleaning">Limpieza de Oficinas</option>
+                                </select>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label data-es="Fecha Seleccionada" data-en="Selected Date">Fecha Seleccionada</label>
+                                <input type="text" name="selected-date" id="selected-date" class="form-control" readonly required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label data-es="Horario Preferido" data-en="Preferred Time">Horario Preferido</label>
+                                <select name="preferred-time" class="form-control" required>
+                                    <option value="morning" data-es="Mañana (8:00 AM - 12:00 PM)" data-en="Morning (8:00 AM - 12:00 PM)">Mañana (8:00 AM - 12:00 PM)</option>
+                                    <option value="afternoon" data-es="Tarde (1:00 PM - 5:00 PM)" data-en="Afternoon (1:00 PM - 5:00 PM)">Tarde (1:00 PM - 5:00 PM)</option>
+                                </select>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label data-es="Tamaño del Espacio" data-en="Space Size">Tamaño del Espacio</label>
+                                <select name="space-size" class="form-control" required>
+                                    <option value="small" data-es="Pequeño (hasta 50m²)" data-en="Small (up to 50m²)">Pequeño (hasta 50m²)</option>
+                                    <option value="medium" data-es="Mediano (51-100m²)" data-en="Medium (51-100m²)">Mediano (51-100m²)</option>
+                                    <option value="large" data-es="Grande (101-200m²)" data-en="Large (101-200m²)">Grande (101-200m²)</option>
+                                    <option value="xlarge" data-es="Extra Grande (más de 200m²)" data-en="Extra Large (over 200m²)">Extra Grande (más de 200m²)</option>
+                                </select>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label data-es="Frecuencia del Servicio" data-en="Service Frequency">Frecuencia del Servicio</label>
+                                <select name="service-frequency" class="form-control" required>
+                                    <option value="once" data-es="Una vez" data-en="One time">Una vez</option>
+                                    <option value="weekly" data-es="Semanal" data-en="Weekly">Semanal</option>
+                                    <option value="biweekly" data-es="Quincenal" data-en="Bi-weekly">Quincenal</option>
+                                    <option value="monthly" data-es="Mensual" data-en="Monthly">Mensual</option>
+                                </select>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label data-es="Servicios Adicionales" data-en="Additional Services">Servicios Adicionales</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="additional-services[]" value="windows">
+                                    <label class="form-check-label" data-es="Limpieza de Ventanas" data-en="Window Cleaning">Limpieza de Ventanas</label>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <input type="email" name="email" class="form-control" placeholder="Email" required>
-                                    </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="additional-services[]" value="carpet">
+                                    <label class="form-check-label" data-es="Limpieza de Alfombras" data-en="Carpet Cleaning">Limpieza de Alfombras</label>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <input type="tel" name="phone" class="form-control" placeholder="Teléfono / Phone" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <select name="service" class="form-control" required>
-                                            <option value="">Seleccione un servicio / Select a service</option>
-                                            <option value="residential">Limpieza Residencial / Residential Cleaning</option>
-                                            <option value="office">Limpieza de Oficina / Office Cleaning</option>
-                                            <option value="commercial">Limpieza Comercial / Commercial Cleaning</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <textarea name="message" class="form-control" placeholder="Mensaje / Message" required></textarea>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <button type="submit" class="pp-btn">Enviar / Send</button>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="additional-services[]" value="furniture">
+                                    <label class="form-check-label" data-es="Limpieza de Muebles" data-en="Furniture Cleaning">Limpieza de Muebles</label>
                                 </div>
                             </div>
+                            <div class="form-group mb-3">
+                                <label data-es="Detalles Adicionales" data-en="Additional Details">Detalles Adicionales</label>
+                                <textarea name="additional-details" class="form-control" rows="3" placeholder="Proporcione cualquier detalle específico sobre el servicio que necesita"></textarea>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label data-es="Tipo de Solicitud" data-en="Request Type">Tipo de Solicitud</label>
+                                <select name="request-type" class="form-control" required>
+                                    <option value="quote" data-es="Solicitar Cotización" data-en="Request Quote">Solicitar Cotización</option>
+                                    <option value="book" data-es="Reservar Servicio" data-en="Book Service">Reservar Servicio</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="pp-btn w-100" data-es="Enviar Solicitud" data-en="Submit Request">Enviar Solicitud</button>
                         </form>
                     </div>
                 </div>
