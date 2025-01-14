@@ -85,6 +85,27 @@ body {
     background-color: #0396d8;
 }
 
+/* Header Text Styles */
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    font-weight: 600;
+}
+
+.hero-content h1 {
+    font-weight: 700;
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+}
+
 /* Hero Section */
 .pp-banner-wrapper {
     position: relative;
@@ -240,6 +261,41 @@ body {
     color: var(--white-color);
 }
 
+/* WhatsApp Button */
+.whatsapp-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #25D366;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.whatsapp-button:hover {
+    transform: scale(1.1);
+    background-color: #20ba5a;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .whatsapp-button {
+        width: 50px;
+        height: 50px;
+        font-size: 25px;
+        bottom: 15px;
+        right: 15px;
+    }
+}
+
 /* Mobile Menu */
 .pp-toggle-btn {
     display: none;
@@ -291,6 +347,85 @@ body {
 .service-card h3 {
     margin-bottom: 1rem;
     color: var(--dark-color);
+}
+
+/* Booking Section */
+.booking-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 4rem 0;
+    border-radius: 15px;
+    margin: 2rem 0;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.booking-calendar {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.booking-form {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.booking-form h2 {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: 0.5rem;
+}
+
+.form-control {
+    border: 2px solid #e9ecef;
+    padding: 0.75rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.1);
+}
+
+/* Calendar Styling */
+.fc {
+    background: white;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.fc .fc-toolbar-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.fc .fc-button-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.fc .fc-button-primary:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.fc .fc-day-today {
+    background-color: rgba(0,123,255,0.1) !important;
+}
+
+.fc .fc-day:hover {
+    background-color: rgba(0,123,255,0.05);
 }
 
 /* Gallery Section */
@@ -426,58 +561,89 @@ body {
     border-radius: 4px;
 }
 
-/* Booking Section */
-.booking-section {
-    padding: 5rem 0;
-    background-color: #f8f9fa;
-}
-
-.booking-form-container {
-    background: var(--white-color);
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.1);
-}
-
-.booking-form-container h3 {
-    color: var(--primary-color);
-    margin-bottom: 1.5rem;
-    font-size: 1.5rem;
-}
-
-#booking-calendar {
-    background: var(--white-color);
-    padding: 1rem;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.1);
-}
-
-.fc-toolbar-title {
-    font-size: 1.25rem !important;
-    color: var(--primary-color);
-}
-
-.fc-button-primary {
-    background-color: var(--primary-color) !important;
-    border-color: var(--primary-color) !important;
-}
-
-.fc-button-primary:hover {
-    background-color: var(--secondary-color) !important;
-    border-color: var(--secondary-color) !important;
-}
-
-.fc-daygrid-day.fc-day-today {
-    background-color: rgba(var(--primary-rgb), 0.1) !important;
-}
-
-.fc-daygrid-day.fc-day-past {
-    background-color: #f5f5f5;
-}
-
+/* Responsive Design */
 @media (max-width: 991px) {
-    .booking-form-container {
-        margin-top: 2rem;
+    .pp-toggle-btn {
+        display: flex;
+    }
+
+    .pp-navbar-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: var(--white-color);
+        padding: 1rem;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .pp-navbar-menu.active {
+        display: block;
+    }
+
+    .pp-navbar-menu ul {
+        flex-direction: column;
+    }
+
+    .pp-navbar-menu ul li {
+        margin: 1rem 0;
+    }
+
+    .pp-banner-left h1 {
+        font-size: 2rem;
+    }
+
+    .sp_order1 {
+        order: 2;
+    }
+
+    .sp_order2 {
+        order: 1;
+    }
+
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Responsive Design Updates */
+@media (max-width: 991px) {
+    .newsletter-form {
+        flex-direction: column;
+    }
+    
+    .social-links {
+        justify-content: center;
+    }
+    
+    .footer-info, .footer-links, .footer-social {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .service-card {
+        margin-bottom: 1.5rem;
+    }
+    
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .quality-item {
+        margin-bottom: 2rem;
+    }
+    
+    .booking-section {
+        padding: 2rem 1rem;
+    }
+
+    .booking-calendar,
+    .booking-form {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
     }
 }
 
@@ -605,80 +771,4 @@ body {
 
 .modal-body li {
     margin-bottom: 0.5rem;
-}
-
-/* Responsive Design */
-@media (max-width: 991px) {
-    .pp-toggle-btn {
-        display: flex;
-    }
-
-    .pp-navbar-menu {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background-color: var(--white-color);
-        padding: 1rem;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-
-    .pp-navbar-menu.active {
-        display: block;
-    }
-
-    .pp-navbar-menu ul {
-        flex-direction: column;
-    }
-
-    .pp-navbar-menu ul li {
-        margin: 1rem 0;
-    }
-
-    .pp-banner-left h1 {
-        font-size: 2rem;
-    }
-
-    .sp_order1 {
-        order: 2;
-    }
-
-    .sp_order2 {
-        order: 1;
-    }
-
-    .gallery-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-/* Responsive Design Updates */
-@media (max-width: 991px) {
-    .newsletter-form {
-        flex-direction: column;
-    }
-    
-    .social-links {
-        justify-content: center;
-    }
-    
-    .footer-info, .footer-links, .footer-social {
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .service-card {
-        margin-bottom: 1.5rem;
-    }
-    
-    .gallery-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .quality-item {
-        margin-bottom: 2rem;
-    }
 }

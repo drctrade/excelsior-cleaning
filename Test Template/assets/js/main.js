@@ -1,4 +1,22 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Language Switcher
+    const languageBtn = document.querySelector('.language-btn');
+    if (languageBtn) {
+        languageBtn.addEventListener('click', function() {
+            const currentLang = document.documentElement.getAttribute('lang') || 'es';
+            const newLang = currentLang === 'es' ? 'en' : 'es';
+            document.documentElement.setAttribute('lang', newLang);
+            
+            // Update all elements with data-es and data-en attributes
+            document.querySelectorAll('[data-es][data-en]').forEach(element => {
+                element.textContent = element.getAttribute(`data-${newLang}`);
+            });
+
+            // Update button text
+            this.textContent = newLang === 'es' ? 'EN' : 'ES';
+        });
+    }
+
     // Initialize FullCalendar
     var calendarEl = document.getElementById('booking-calendar');
     if (calendarEl) {
@@ -13,8 +31,15 @@ document.addEventListener('DOMContentLoaded', function() {
             selectable: true,
             selectMirror: true,
             select: function(info) {
-                // Update the selected date in the form
-                document.getElementById('selected-date').value = info.startStr;
+                const dateInput = document.getElementById('selected-date');
+                if (dateInput) {
+                    const formattedDate = info.start.toLocaleDateString('es-ES', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                    dateInput.value = formattedDate;
+                }
             },
             selectConstraint: {
                 start: new Date().toISOString().split('T')[0] // Only allow selecting current or future dates
