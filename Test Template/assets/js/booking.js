@@ -1,75 +1,49 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Calendar
-    const calendarEl = document.getElementById('booking-calendar');
-    if (calendarEl) {
-        const calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            headerToolbar: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'dayGridMonth'
-            },
-            locale: document.documentElement.getAttribute('lang') || 'es',
-            selectable: true,
-            selectMirror: true,
-            events: '/.netlify/functions/get-available-dates',
-            select: function(info) {
-                const dateInput = document.getElementById('selected-date');
-                if (dateInput) {
-                    const date = new Date(info.start);
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0);
+    var calendarEl = document.getElementById('booking-calendar');
+    
+    if (!calendarEl) return;
 
-                    if (date < today) {
-                        alert('Por favor seleccione una fecha futura.');
-                        return;
-                    }
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        selectable: true,
+        selectMirror: true,
+        locale: document.documentElement.lang || 'es',
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth'
+        },
+        select: function(info) {
+            document.getElementById('selected-date').value = info.startStr;
+        },
+        dateClick: function(info) {
+            document.getElementById('selected-date').value = info.dateStr;
+        }
+    });
 
-                    // Check if the selected date is in available dates
-                    const events = calendar.getEvents();
-                    const isAvailable = events.some(event => {
-                        const eventDate = new Date(event.start);
-                        return eventDate.toDateString() === date.toDateString();
+    calendar.render();
+
+    // Fetch available dates from Netlify function
+    fetch('/.netlify/functions/get-available-dates')
+        .then(response => response.json())
+        .then(data => {
+            // Add available dates to calendar
+            if (data && data.availableDates) {
+                data.availableDates.forEach(date => {
+                    calendar.addEvent({
+                        start: date,
+                        display: 'background',
+                        backgroundColor: 'rgba(40, 167, 69, 0.2)'
                     });
-
-                    if (!isAvailable) {
-                        alert('Por favor seleccione una fecha disponible (marcada en verde).');
-                        return;
-                    }
-
-                    const locale = document.documentElement.getAttribute('lang') || 'es';
-                    const options = { 
-                        weekday: 'long', 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric' 
-                    };
-                    dateInput.value = date.toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-US', options);
-                }
-            },
-            selectConstraint: {
-                start: new Date().toISOString().split('T')[0]
-            },
-            eventClick: function(info) {
-                const date = info.event.start;
-                const dateInput = document.getElementById('selected-date');
-                if (dateInput) {
-                    const locale = document.documentElement.getAttribute('lang') || 'es';
-                    const options = { 
-                        weekday: 'long', 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric' 
-                    };
-                    dateInput.value = date.toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-US', options);
-                }
+                });
             }
-        });
-        calendar.render();
+        })
+        .catch(error => console.error('Error fetching available dates:', error));
 
-        // Store calendar instance globally for language switching
-        window.bookingCalendar = calendar;
-    }
+    // Update calendar locale when language changes
+    document.addEventListener('languageChanged', function(e) {
+        calendar.setOption('locale', e.detail.language);
+    });
 
     // Form submission handling
     const bookingForm = document.getElementById('booking-form');
