@@ -351,81 +351,113 @@ body {
 
 /* Booking Section */
 .booking-section {
+    padding: 80px 0;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    padding: 4rem 0;
-    border-radius: 15px;
-    margin: 2rem 0;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
 .booking-calendar {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
 }
 
-.booking-form {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-}
-
-.booking-form h2 {
-    color: var(--primary-color);
-    font-weight: 600;
-    margin-bottom: 1.5rem;
-}
-
-.form-group label {
-    font-weight: 500;
-    color: #495057;
-    margin-bottom: 0.5rem;
-}
-
-.form-control {
-    border: 2px solid #e9ecef;
-    padding: 0.75rem;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-}
-
-.form-control:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.1);
-}
-
-/* Calendar Styling */
 .fc {
-    background: white;
-    padding: 1rem;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    max-width: 100%;
+    background: #fff;
+    padding: 10px;
+    border-radius: 8px;
 }
 
 .fc .fc-toolbar-title {
-    font-size: 1.5rem;
+    font-size: 1.5em;
     font-weight: 600;
-    color: var(--primary-color);
+    color: #333;
 }
 
 .fc .fc-button-primary {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
+    background-color: #28a745;
+    border-color: #28a745;
 }
 
 .fc .fc-button-primary:hover {
-    background-color: var(--secondary-color);
-    border-color: var(--secondary-color);
+    background-color: #218838;
+    border-color: #1e7e34;
 }
 
 .fc .fc-day-today {
-    background-color: rgba(0,123,255,0.1) !important;
+    background-color: rgba(40, 167, 69, 0.1) !important;
 }
 
-.fc .fc-day:hover {
-    background-color: rgba(0,123,255,0.05);
+.fc .fc-highlight {
+    background-color: rgba(40, 167, 69, 0.2) !important;
+}
+
+.booking-form {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+.booking-form h2 {
+    margin-bottom: 30px;
+    color: #333;
+    font-weight: 600;
+}
+
+.form-control {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+}
+
+.form-control:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+.form-check {
+    margin-bottom: 10px;
+}
+
+textarea.form-control {
+    min-height: 120px;
+}
+
+.pp-btn {
+    background: #28a745;
+    color: #fff;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.pp-btn:hover {
+    background: #218838;
+    transform: translateY(-2px);
+}
+
+/* Language Button */
+.language-btn {
+    background: transparent;
+    border: 2px solid #28a745;
+    color: #28a745;
+    padding: 5px 15px;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.language-btn:hover {
+    background: #28a745;
+    color: #fff;
 }
 
 /* Gallery Section */
@@ -504,6 +536,16 @@ body {
 .client-name {
     color: var(--dark-color);
     font-weight: 600;
+}
+
+.testimonial-item h4 {
+    font-weight: normal;
+    margin-bottom: 5px;
+}
+
+.testimonial-item .designation {
+    font-style: italic;
+    color: #666;
 }
 
 /* WhatsApp QR Code */

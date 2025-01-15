@@ -65,7 +65,7 @@
                             <a href="#contacto" data-es="Contacto" data-en="Contact">Contacto</a>
                         </li>
                         <li>
-                            <button class="lang-toggle" onclick="toggleLanguage()">EN</button>
+                            <button class="language-btn">EN</button>
                         </li>
                     </ul>
                 </div>
@@ -276,20 +276,35 @@ Excelsior Cleaning Services: La limpieza profesional llevada a la perfección</p
     </div>
 
     <!-- Booking Section -->
-    <section class="booking-section" id="reservar">
+    <section class="booking-section" id="contacto">
         <div class="container">
+            <div class="section-title text-center">
+                <h6 class="pp-heading" data-es="Reservar Servicio" data-en="Book Service">Reservar Servicio</h6>
+                <h2 data-es="Solicitar Cotización" data-en="Request Quote">Solicitar Cotización</h2>
+            </div>
             <div class="row">
                 <div class="col-lg-6">
                     <div class="booking-calendar">
-                        <h2 data-es="Seleccione una Fecha" data-en="Select a Date">Seleccione una Fecha</h2>
                         <div id="booking-calendar"></div>
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="booking-form">
-                        <h2 data-es="Solicitar Servicio" data-en="Request Service">Solicitar Servicio</h2>
+                    <div class="contact-form">
                         <form id="booking-form" name="booking" method="POST" data-netlify="true">
                             <input type="hidden" name="form-name" value="booking">
+                            <div class="form-group mb-3">
+                                <label data-es="Fecha Seleccionada" data-en="Selected Date">Fecha Seleccionada</label>
+                                <input type="text" id="selected-date" name="selected-date" class="form-control" readonly required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label data-es="Tipo de Servicio" data-en="Service Type">Tipo de Servicio</label>
+                                <select name="service-type" class="form-control" required>
+                                    <option value="" data-es="Seleccione un servicio" data-en="Select a service">Seleccione un servicio</option>
+                                    <option value="residential" data-es="Limpieza Residencial" data-en="Residential Cleaning">Limpieza Residencial</option>
+                                    <option value="commercial" data-es="Limpieza Comercial" data-en="Commercial Cleaning">Limpieza Comercial</option>
+                                    <option value="office" data-es="Limpieza de Oficinas" data-en="Office Cleaning">Limpieza de Oficinas</option>
+                                </select>
+                            </div>
                             <div class="form-group mb-3">
                                 <label data-es="Nombre Completo" data-en="Full Name">Nombre Completo</label>
                                 <input type="text" name="name" class="form-control" required>
@@ -303,83 +318,8 @@ Excelsior Cleaning Services: La limpieza profesional llevada a la perfección</p
                                 <input type="tel" name="phone" class="form-control" required>
                             </div>
                             <div class="form-group mb-3">
-                                <label data-es="Tipo de Servicio" data-en="Service Type">Tipo de Servicio</label>
-                                <select name="service-type" class="form-control" required>
-                                    <option value="" data-es="Seleccione un servicio" data-en="Select a service">Seleccione un servicio</option>
-                                    <option value="residential" data-es="Limpieza Residencial" data-en="Residential Cleaning">Limpieza Residencial</option>
-                                    <option value="commercial" data-es="Limpieza Comercial" data-en="Commercial Cleaning">Limpieza Comercial</option>
-                                    <option value="office" data-es="Limpieza de Oficinas" data-en="Office Cleaning">Limpieza de Oficinas</option>
-                                </select>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label data-es="Fecha Seleccionada" data-en="Selected Date">Fecha Seleccionada</label>
-                                <input type="text" name="selected-date" id="selected-date" class="form-control" readonly required>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label data-es="Horario Preferido" data-en="Preferred Time">Horario Preferido</label>
-                                <select name="preferred-time" class="form-control" required>
-                                    <option value="morning" data-es="Mañana (8:00 AM - 12:00 PM)" data-en="Morning (8:00 AM - 12:00 PM)">Mañana (8:00 AM - 12:00 PM)</option>
-                                    <option value="afternoon" data-es="Tarde (1:00 PM - 5:00 PM)" data-en="Afternoon (1:00 PM - 5:00 PM)">Tarde (1:00 PM - 5:00 PM)</option>
-                                </select>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label data-es="Detalles del Servicio" data-en="Service Details">Detalles del Servicio</label>
-                                <textarea name="details" class="form-control" rows="3" required></textarea>
-                            </div>
-                            <button type="submit" class="pp-btn w-100" data-es="Enviar Solicitud" data-en="Submit Request">Enviar Solicitud</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <div class="pp-contact-wrapper" id="contacto">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="contact-form">
-                        <h2 data-es="Solicitar Cotización" data-en="Request a Quote">Solicitar Cotización</h2>
-                        <form id="booking-form" name="booking" method="POST" data-netlify="true">
-                            <input type="hidden" name="form-name" value="booking">
-                            <div class="form-group mb-3">
-                                <label data-es="Tipo de Servicio" data-en="Service Type">Tipo de Servicio</label>
-                                <select name="service-type" class="form-control" required>
-                                    <option value="" data-es="Seleccione un servicio" data-en="Select a service">Seleccione un servicio</option>
-                                    <option value="residential" data-es="Limpieza Residencial" data-en="Residential Cleaning">Limpieza Residencial</option>
-                                    <option value="commercial" data-es="Limpieza Comercial" data-en="Commercial Cleaning">Limpieza Comercial</option>
-                                    <option value="office" data-es="Limpieza de Oficinas" data-en="Office Cleaning">Limpieza de Oficinas</option>
-                                </select>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label data-es="Fecha Seleccionada" data-en="Selected Date">Fecha Seleccionada</label>
-                                <input type="text" name="selected-date" id="selected-date" class="form-control" readonly required>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label data-es="Horario Preferido" data-en="Preferred Time">Horario Preferido</label>
-                                <select name="preferred-time" class="form-control" required>
-                                    <option value="morning" data-es="Mañana (8:00 AM - 12:00 PM)" data-en="Morning (8:00 AM - 12:00 PM)">Mañana (8:00 AM - 12:00 PM)</option>
-                                    <option value="afternoon" data-es="Tarde (1:00 PM - 5:00 PM)" data-en="Afternoon (1:00 PM - 5:00 PM)">Tarde (1:00 PM - 5:00 PM)</option>
-                                </select>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label data-es="Tamaño del Espacio" data-en="Space Size">Tamaño del Espacio</label>
-                                <select name="space-size" class="form-control" required>
-                                    <option value="small" data-es="Pequeño (hasta 50m²)" data-en="Small (up to 50m²)">Pequeño (hasta 50m²)</option>
-                                    <option value="medium" data-es="Mediano (51-100m²)" data-en="Medium (51-100m²)">Mediano (51-100m²)</option>
-                                    <option value="large" data-es="Grande (101-200m²)" data-en="Large (101-200m²)">Grande (101-200m²)</option>
-                                    <option value="xlarge" data-es="Extra Grande (más de 200m²)" data-en="Extra Large (over 200m²)">Extra Grande (más de 200m²)</option>
-                                </select>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label data-es="Frecuencia del Servicio" data-en="Service Frequency">Frecuencia del Servicio</label>
-                                <select name="service-frequency" class="form-control" required>
-                                    <option value="once" data-es="Una vez" data-en="One time">Una vez</option>
-                                    <option value="weekly" data-es="Semanal" data-en="Weekly">Semanal</option>
-                                    <option value="biweekly" data-es="Quincenal" data-en="Bi-weekly">Quincenal</option>
-                                    <option value="monthly" data-es="Mensual" data-en="Monthly">Mensual</option>
-                                </select>
+                                <label data-es="Dirección" data-en="Address">Dirección</label>
+                                <input type="text" name="address" class="form-control" required>
                             </div>
                             <div class="form-group mb-3">
                                 <label data-es="Servicios Adicionales" data-en="Additional Services">Servicios Adicionales</label>
@@ -392,33 +332,21 @@ Excelsior Cleaning Services: La limpieza profesional llevada a la perfección</p
                                     <label class="form-check-label" data-es="Limpieza de Alfombras" data-en="Carpet Cleaning">Limpieza de Alfombras</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="additional-services[]" value="furniture">
-                                    <label class="form-check-label" data-es="Limpieza de Muebles" data-en="Furniture Cleaning">Limpieza de Muebles</label>
+                                    <input class="form-check-input" type="checkbox" name="additional-services[]" value="disinfection">
+                                    <label class="form-check-label" data-es="Desinfección" data-en="Disinfection">Desinfección</label>
                                 </div>
                             </div>
                             <div class="form-group mb-3">
-                                <label data-es="Detalles Adicionales" data-en="Additional Details">Detalles Adicionales</label>
-                                <textarea name="additional-details" class="form-control" rows="3" placeholder="Proporcione cualquier detalle específico sobre el servicio que necesita"></textarea>
+                                <label data-es="Mensaje" data-en="Message">Mensaje</label>
+                                <textarea name="message" class="form-control" rows="4"></textarea>
                             </div>
-                            <div class="form-group mb-3">
-                                <label data-es="Tipo de Solicitud" data-en="Request Type">Tipo de Solicitud</label>
-                                <select name="request-type" class="form-control" required>
-                                    <option value="quote" data-es="Solicitar Cotización" data-en="Request Quote">Solicitar Cotización</option>
-                                    <option value="book" data-es="Reservar Servicio" data-en="Book Service">Reservar Servicio</option>
-                                </select>
-                            </div>
-                            <button type="submit" class="pp-btn w-100" data-es="Enviar Solicitud" data-en="Submit Request">Enviar Solicitud</button>
+                            <button type="submit" class="pp-btn w-100" data-es="Enviar Solicitud" data-en="Send Request">Enviar Solicitud</button>
                         </form>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="contact-info">
-                        <img src="assets/images/contact.jpg" alt="Contact Us">
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
     <!-- Footer -->
     <footer class="pp-footer">
@@ -556,7 +484,7 @@ Excelsior Cleaning Services: La limpieza profesional llevada a la perfección</p
     <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.10/main.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.10/main.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.10/main.min.js'></script>
-    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/locales-all@6.1.10/main.min.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/locales-all@6.1.10/main.min.js'></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/booking.js"></script>
 
