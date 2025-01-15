@@ -9,9 +9,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 center: 'title',
                 right: 'dayGridMonth'
             },
-            locale: 'es',
+            locale: document.documentElement.getAttribute('lang') || 'es',
             selectable: true,
             selectMirror: true,
+            events: '/.netlify/functions/get-available-dates',
             select: function(info) {
                 const dateInput = document.getElementById('selected-date');
                 if (dateInput) {
@@ -24,40 +25,43 @@ document.addEventListener('DOMContentLoaded', function() {
                         return;
                     }
 
+                    // Check if the selected date is in available dates
+                    const events = calendar.getEvents();
+                    const isAvailable = events.some(event => {
+                        const eventDate = new Date(event.start);
+                        return eventDate.toDateString() === date.toDateString();
+                    });
+
+                    if (!isAvailable) {
+                        alert('Por favor seleccione una fecha disponible (marcada en verde).');
+                        return;
+                    }
+
+                    const locale = document.documentElement.getAttribute('lang') || 'es';
                     const options = { 
                         weekday: 'long', 
                         year: 'numeric', 
                         month: 'long', 
                         day: 'numeric' 
                     };
-                    dateInput.value = date.toLocaleDateString('es-ES', options);
+                    dateInput.value = date.toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-US', options);
                 }
             },
-            validRange: function(nowDate) {
-                return {
-                    start: nowDate
-                };
+            selectConstraint: {
+                start: new Date().toISOString().split('T')[0]
             },
-            eventSources: [
-                {
-                    url: '/.netlify/functions/get-available-dates',
-                    method: 'GET',
-                    failure: function() {
-                        console.error('Error loading available dates');
-                    }
-                }
-            ],
             eventClick: function(info) {
+                const date = info.event.start;
                 const dateInput = document.getElementById('selected-date');
                 if (dateInput) {
-                    const date = new Date(info.event.start);
+                    const locale = document.documentElement.getAttribute('lang') || 'es';
                     const options = { 
                         weekday: 'long', 
                         year: 'numeric', 
                         month: 'long', 
                         day: 'numeric' 
                     };
-                    dateInput.value = date.toLocaleDateString('es-ES', options);
+                    dateInput.value = date.toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-US', options);
                 }
             }
         });
