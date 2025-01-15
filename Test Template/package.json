@@ -1,0 +1,9 @@
+{
+  "name": "excelsior-cleaning",
+  "version": "1.0.0",
+  "description": "Excelsior Cleaning Services Website",
+  "scripts": {
+    "build": "echo 'No build step needed'",
+    "dev": "echo 'No dev step needed'"
+  }
+}

@@ -2,8 +2,5 @@
   "name": "get-available-dates",
   "version": "1.0.0",
   "description": "Netlify function to get available dates for booking",
-  "main": "get-available-dates.js",
-  "dependencies": {
-    "mongodb": "^5.7.0"
-  }
+  "main": "get-available-dates.js"
 }
