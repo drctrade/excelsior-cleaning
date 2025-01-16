@@ -1,4 +1,14 @@
 [build]
   publish = "."
   functions = "functions"
-  command = "cd functions/get-available-dates && npm install"
+  command = "npm install && cd functions/get-available-dates && npm install && cd ../manage-dates && npm install"
+
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
