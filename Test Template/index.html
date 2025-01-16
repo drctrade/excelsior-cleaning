@@ -144,8 +144,8 @@ Excelsior Cleaning Services: La limpieza profesional llevada a la perfección</p
     <section id="servicios" class="services-section">
         <div class="container">
             <div class="section-title text-center mb-5">
-                <h2>Nuestros Servicios</h2>
-                <p>Ofrecemos servicios profesionales de limpieza para hogares y negocios</p>
+                <h6 class="pp-heading" data-es="Nuestros Servicios" data-en="Our Services">Nuestros Servicios</h6>
+                <h2 data-es="Servicios de Limpieza Profesional" data-en="Professional Cleaning Services">Servicios de Limpieza Profesional</h2>
             </div>
             
             <div class="row">
@@ -156,9 +156,12 @@ Excelsior Cleaning Services: La limpieza profesional llevada a la perfección</p
                             <img src="assets/images/service1.jpg" alt="Limpieza Residencial">
                         </div>
                         <div class="service-content">
-                            <h3>Limpieza Residencial</h3>
-                            <p>Mantenemos su hogar impecable con servicios de limpieza profesional personalizados según sus necesidades.</p>
-                            <a href="#contacto" class="read-more">Más Información</a>
+                            <h3 data-es="Limpieza Residencial" data-en="Residential Cleaning">Limpieza Residencial</h3>
+                            <p data-es="Mantenemos su hogar impecable con servicios de limpieza profesional personalizados según sus necesidades." 
+                               data-en="We keep your home spotless with professional cleaning services customized to your needs.">
+                                Mantenemos su hogar impecable con servicios de limpieza profesional personalizados según sus necesidades.
+                            </p>
+                            <a href="#contacto" class="read-more" data-es="Más Información" data-en="More Information">Más Información</a>
                         </div>
                     </div>
                 </div>
@@ -170,9 +173,12 @@ Excelsior Cleaning Services: La limpieza profesional llevada a la perfección</p
                             <img src="assets/images/service2.jpg" alt="Limpieza Comercial">
                         </div>
                         <div class="service-content">
-                            <h3>Limpieza Comercial</h3>
-                            <p>Servicios de limpieza profesional para oficinas, tiendas y espacios comerciales.</p>
-                            <a href="#contacto" class="read-more">Más Información</a>
+                            <h3 data-es="Limpieza Comercial" data-en="Commercial Cleaning">Limpieza Comercial</h3>
+                            <p data-es="Servicios de limpieza profesional para oficinas, tiendas y espacios comerciales."
+                               data-en="Professional cleaning services for offices, stores, and commercial spaces.">
+                                Servicios de limpieza profesional para oficinas, tiendas y espacios comerciales.
+                            </p>
+                            <a href="#contacto" class="read-more" data-es="Más Información" data-en="More Information">Más Información</a>
                         </div>
                     </div>
                 </div>
@@ -184,9 +190,12 @@ Excelsior Cleaning Services: La limpieza profesional llevada a la perfección</p
                             <img src="assets/images/service3.jpg" alt="Limpieza Profunda">
                         </div>
                         <div class="service-content">
-                            <h3>Limpieza Profunda</h3>
-                            <p>Limpieza exhaustiva para eliminar la suciedad acumulada y desinfectar completamente su espacio.</p>
-                            <a href="#contacto" class="read-more">Más Información</a>
+                            <h3 data-es="Limpieza Profunda" data-en="Deep Cleaning">Limpieza Profunda</h3>
+                            <p data-es="Limpieza exhaustiva para eliminar la suciedad acumulada y desinfectar completamente su espacio."
+                               data-en="Thorough cleaning to remove accumulated dirt and completely disinfect your space.">
+                                Limpieza exhaustiva para eliminar la suciedad acumulada y desinfectar completamente su espacio.
+                            </p>
+                            <a href="#contacto" class="read-more" data-es="Más Información" data-en="More Information">Más Información</a>
                         </div>
                     </div>
                 </div>
@@ -275,45 +284,47 @@ Excelsior Cleaning Services: La limpieza profesional llevada a la perfección</p
                     <div class="form-container">
                         <form id="bookingForm" class="booking-form" name="booking" method="POST" data-netlify="true" action="/thank-you.html">
                             <input type="hidden" name="form-name" value="booking">
-                            <h2>RESERVAR SERVICIO</h2>
-                            <h3>Solicitar Cotización</h3>
+                            <h2 data-es="RESERVAR SERVICIO" data-en="BOOK SERVICE">RESERVAR SERVICIO</h2>
+                            <h3 data-es="Solicitar Cotización" data-en="Request Quote">Solicitar Cotización</h3>
                             
                             <div class="form-group">
-                                <label for="selectedDate">Fecha Seleccionada</label>
+                                <label for="selectedDate" data-es="Fecha Seleccionada" data-en="Selected Date">Fecha Seleccionada</label>
                                 <input type="date" id="selectedDate" name="date" class="form-control" required>
-                                <small id="dateMessage" class="form-text text-muted">Por favor seleccione una fecha disponible</small>
+                                <small id="dateMessage" class="form-text text-muted" 
+                                    data-es="Por favor seleccione una fecha disponible" 
+                                    data-en="Please select an available date">Por favor seleccione una fecha disponible</small>
                             </div>
 
                             <div class="form-group">
-                                <label for="serviceType">Tipo de Servicio</label>
+                                <label for="serviceType" data-es="Tipo de Servicio" data-en="Service Type">Tipo de Servicio</label>
                                 <select id="serviceType" name="service-type" class="form-control" required>
-                                    <option value="Limpieza Residencial">Limpieza Residencial</option>
-                                    <option value="Limpieza Comercial">Limpieza Comercial</option>
-                                    <option value="Limpieza Profunda">Limpieza Profunda</option>
+                                    <option value="Limpieza Residencial" data-es="Limpieza Residencial" data-en="Residential Cleaning">Limpieza Residencial</option>
+                                    <option value="Limpieza Comercial" data-es="Limpieza Comercial" data-en="Commercial Cleaning">Limpieza Comercial</option>
+                                    <option value="Limpieza Profunda" data-es="Limpieza Profunda" data-en="Deep Cleaning">Limpieza Profunda</option>
                                 </select>
                             </div>
 
                             <div class="form-group">
-                                <label for="fullName">Nombre Completo</label>
+                                <label for="fullName" data-es="Nombre Completo" data-en="Full Name">Nombre Completo</label>
                                 <input type="text" id="fullName" name="full-name" class="form-control" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="email">Correo Electrónico</label>
+                                <label for="email" data-es="Correo Electrónico" data-en="Email">Correo Electrónico</label>
                                 <input type="email" id="email" name="email" class="form-control" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="phone">Teléfono</label>
+                                <label for="phone" data-es="Teléfono" data-en="Phone">Teléfono</label>
                                 <input type="tel" id="phone" name="phone" class="form-control" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="address">Dirección</label>
+                                <label for="address" data-es="Dirección" data-en="Address">Dirección</label>
                                 <input type="text" id="address" name="address" class="form-control" required>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
+                            <button type="submit" class="btn btn-primary" data-es="Enviar Solicitud" data-en="Submit Request">Enviar Solicitud</button>
                         </form>
                     </div>
                 </div>

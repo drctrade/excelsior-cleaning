@@ -5,6 +5,11 @@
     --gray-color: #A5A5A5;
     --white-color: #FFFFFF;
     --font-outfit: 'Outfit', sans-serif;
+    --light-color: #f8f9fa;
+    --primary-font: var(--font-outfit);
+    --text-color: #666;
+    --border-color: #ddd;
+    --primary-color-dark: #0396d8;
 }
 
 /* Reset & Base Styles */
@@ -316,24 +321,44 @@ body {
 /* Services Section */
 .services-section {
     padding: 80px 0;
-    background: #f8f9fa;
+    background: var(--light-color);
+    font-family: var(--primary-font);
+}
+
+.services-section .section-title h6.pp-heading {
+    color: var(--primary-color);
+    font-size: 1rem;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.services-section .section-title h2 {
+    color: var(--dark-color);
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    font-weight: 700;
 }
 
 .service-item {
     margin-bottom: 30px;
-    background: #fff;
+    background: var(--white-color);
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
     height: 100%;
     display: flex;
     flex-direction: column;
+    transition: transform 0.3s ease;
+}
+
+.service-item:hover {
+    transform: translateY(-5px);
 }
 
 .service-item .service-img {
     position: relative;
     width: 100%;
-    padding-top: 75%; /* 4:3 aspect ratio */
+    padding-top: 75%;
     overflow: hidden;
 }
 
@@ -345,7 +370,7 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 30%; /* Adjust vertical position to show faces better */
+    object-position: center 30%;
     transition: transform 0.3s ease;
 }
 
@@ -354,36 +379,41 @@ body {
 }
 
 .service-content {
-    padding: 20px;
+    padding: 25px;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
 }
 
 .service-content h3 {
-    font-size: 20px;
+    font-size: 1.5rem;
     margin-bottom: 15px;
-    color: #333;
+    color: var(--dark-color);
+    font-weight: 600;
 }
 
 .service-content p {
-    color: #666;
+    color: var(--text-color);
     margin-bottom: 20px;
     flex-grow: 1;
+    line-height: 1.6;
 }
 
 .service-content .read-more {
     align-self: flex-start;
-    padding: 8px 20px;
-    background: #007bff;
-    color: #fff;
+    padding: 10px 25px;
+    background: var(--primary-color);
+    color: var(--white-color);
     border-radius: 4px;
     text-decoration: none;
+    font-weight: 500;
     transition: background-color 0.3s;
+    text-transform: uppercase;
+    font-size: 0.9rem;
 }
 
 .service-content .read-more:hover {
-    background: #0056b3;
+    background: var(--primary-color-dark);
 }
 
 /* Booking Section */
@@ -449,49 +479,42 @@ body {
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    font-family: var(--primary-font);
 }
 
-.booking-form h2 {
-    margin-bottom: 30px;
-    color: #333;
-    font-weight: 600;
+.booking-form h2,
+.booking-form h3 {
+    color: var(--dark-color);
+    font-family: var(--primary-font);
+    margin-bottom: 1.5rem;
 }
 
-.form-control {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 12px 15px;
-    margin-bottom: 15px;
-}
-
-.form-control:focus {
-    border-color: #28a745;
-    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
-}
-
-.form-check {
-    margin-bottom: 10px;
-}
-
-textarea.form-control {
-    min-height: 120px;
-}
-
-.pp-btn {
-    background: #007bff;
-    color: #fff;
-    padding: 12px 30px;
-    border: none;
-    border-radius: 5px;
+.booking-form .form-group label {
+    color: var(--dark-color);
     font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.booking-form .form-control {
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.75rem;
+    font-family: var(--primary-font);
+}
+
+.booking-form .btn-primary {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    padding: 12px 30px;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    font-size: 1rem;
     transition: all 0.3s ease;
 }
 
-.pp-btn:hover {
-    background: #0056b3;
-    transform: translateY(-2px);
+.booking-form .btn-primary:hover {
+    background: var(--primary-color-dark);
+    border-color: var(--primary-color-dark);
 }
 
 /* Language Button */
