@@ -38,7 +38,7 @@
         <div class="container">
             <nav class="pp-navbar-wrapper">
                 <div class="pp-brand-logo">
-                    <a href="#">
+                    <a href="#inicio">
                         <img src="assets/images/logo.jpg" alt="Excelsior Cleaning Services Logo" width="150">
                     </a>
                     <div class="pp-toggle-btn">
@@ -406,10 +406,27 @@ Excelsior Cleaning Services: La limpieza profesional llevada a la perfección</p
             address: document.getElementById('address').value
         };
 
-        // Here you can add code to submit the form data to your backend
-        console.log('Form submitted:', formData);
-        alert('Solicitud enviada con éxito! Nos pondremos en contacto pronto.');
-        this.reset();
+        try {
+            const response = await fetch('/.netlify/functions/submit-booking', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const result = await response.json();
+            
+            if (response.ok) {
+                // Redirect to thank you page
+                window.location.href = '/thank-you.html';
+            } else {
+                showMessage(result.error || 'Error al enviar la solicitud. Por favor intente nuevamente.', true);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showMessage('Error al enviar la solicitud. Por favor intente nuevamente.', true);
+        }
     });
     </script>
 
