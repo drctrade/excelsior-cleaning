@@ -314,41 +314,76 @@ body {
 }
 
 /* Services Section */
-.pp-service-wrapper {
-    padding: 5rem 0;
-    background-color: #f8f9fa;
+.services-section {
+    padding: 80px 0;
+    background: #f8f9fa;
 }
 
-.section-title h2 {
-    font-size: 2rem;
-    margin-bottom: 2rem;
-    color: var(--dark-color);
-}
-
-.service-card {
-    background: var(--white-color);
+.service-item {
+    margin-bottom: 30px;
+    background: #fff;
     border-radius: 8px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    overflow: hidden;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.service-item .service-img {
+    position: relative;
+    width: 100%;
+    padding-top: 75%; /* 4:3 aspect ratio */
+    overflow: hidden;
+}
+
+.service-item .service-img img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%; /* Adjust vertical position to show faces better */
     transition: transform 0.3s ease;
 }
 
-.service-card:hover {
-    transform: translateY(-10px);
+.service-item:hover .service-img img {
+    transform: translate(-50%, -50%) scale(1.1);
 }
 
-.service-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
+.service-content {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.service-content h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.service-content p {
+    color: #666;
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+
+.service-content .read-more {
+    align-self: flex-start;
+    padding: 8px 20px;
+    background: #007bff;
+    color: #fff;
     border-radius: 4px;
-    margin-bottom: 1.5rem;
+    text-decoration: none;
+    transition: background-color 0.3s;
 }
 
-.service-card h3 {
-    margin-bottom: 1rem;
-    color: var(--dark-color);
+.service-content .read-more:hover {
+    background: #0056b3;
 }
 
 /* Booking Section */
