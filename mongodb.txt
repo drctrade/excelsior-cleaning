@@ -1,0 +1,6 @@
+Mongo DB 
+
+Username: chamdarly
+Password: a5olWXW2KOrnruU4
+
+Connection string:mongodb+srv://chamdarly:<a5olWXW2KOrnruU4>@excelsiorcleaning.5ljrt.mongodb.net/?retryWrites=true&w=majority&appName=excelsiorcleaning
