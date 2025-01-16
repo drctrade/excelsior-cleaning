@@ -1,3 +1,107 @@
+// Initialize Admin Calendar
+var calendarEl = document.getElementById('admin-calendar');
+var calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'dayGridMonth',
+    headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth'
+    },
+    selectable: true,
+    selectMirror: true,
+    editable: true,
+    eventClick: function(info) {
+        if (confirm('¿Desea eliminar este bloqueo?')) {
+            info.event.remove();
+            // Save changes to Netlify
+            saveAvailability();
+        }
+    },
+    events: loadBlockedDates()
+});
+calendar.render();
+
+// Initialize calendar with flatpickr
+function initializeCalendar() {
+    calendar = flatpickr("#calendar", {
+        mode: "multiple",
+        dateFormat: "Y-m-d",
+        enable: [],
+        inline: true,
+        monthSelectorType: "static",
+        prevArrow: "<span class='fas fa-chevron-left'></span>",
+        nextArrow: "<span class='fas fa-chevron-right'></span>",
+        onChange: function(selectedDates, dateStr, instance) {
+            updateSelectedDates(selectedDates);
+        }
+    });
+
+    // Add select all month functionality
+    document.getElementById('selectAllMonth').addEventListener('change', function(e) {
+        const currentMonth = calendar.currentMonth;
+        const currentYear = calendar.currentYear;
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        
+        if (e.target.checked) {
+            // Select all days in current month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(currentYear, currentMonth, day);
+                if (!calendar.selectedDates.some(d => d.toDateString() === date.toDateString())) {
+                    calendar.selectedDates.push(date);
+                }
+            }
+        } else {
+            // Deselect all days in current month
+            calendar.selectedDates = calendar.selectedDates.filter(date => {
+                return date.getMonth() !== currentMonth || date.getFullYear() !== currentYear;
+            });
+        }
+        
+        calendar.redraw();
+        updateSelectedDates(calendar.selectedDates);
+    });
+
+    // Update select all checkbox when month changes
+    calendar.config.onMonthChange = function(selectedDates, dateStr, instance) {
+        updateSelectAllCheckbox();
+    };
+}
+
+// Update select all checkbox based on current month selection
+function updateSelectAllCheckbox() {
+    const currentMonth = calendar.currentMonth;
+    const currentYear = calendar.currentYear;
+    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+    
+    let allSelected = true;
+    for (let day = 1; day <= daysInMonth; day++) {
+        const date = new Date(currentYear, currentMonth, day);
+        if (!calendar.selectedDates.some(d => d.toDateString() === date.toDateString())) {
+            allSelected = false;
+            break;
+        }
+    }
+    
+    document.getElementById('selectAllMonth').checked = allSelected;
+}
+
+// Add mobile-friendly improvements
+function addMobileImprovements() {
+    const calendarElement = document.querySelector('.flatpickr-calendar');
+    if (calendarElement) {
+        calendarElement.style.maxWidth = '100%';
+        calendarElement.style.fontSize = '16px'; // Prevent zoom on mobile
+        
+        // Make day cells larger on mobile
+        const dayCells = calendarElement.querySelectorAll('.flatpickr-day');
+        dayCells.forEach(cell => {
+            cell.style.minHeight = '44px'; // Minimum touch target size
+            cell.style.lineHeight = '44px';
+        });
+    }
+}
+
+// Initialize everything
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize Admin Calendar
     var calendarEl = document.getElementById('admin-calendar');
@@ -66,6 +170,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Load Recent Bookings
     loadRecentBookings();
+
+    initializeCalendar();
+    addMobileImprovements();
+    
+    // Reinitialize mobile improvements when window resizes
+    window.addEventListener('resize', addMobileImprovements);
 });
 
 // Function to load blocked dates from Netlify

@@ -227,6 +227,67 @@ label {
     }
 }
 
+/* Mobile Improvements */
+@media (max-width: 768px) {
+    .flatpickr-calendar {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .flatpickr-days {
+        width: 100% !important;
+    }
+
+    .dayContainer {
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .flatpickr-day {
+        max-width: none !important;
+        height: 44px !important;
+        line-height: 44px !important;
+        font-size: 16px !important;
+    }
+
+    .bulk-actions {
+        padding: 15px;
+        margin: 10px 0;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .form-check-label {
+        font-size: 16px;
+    }
+
+    .btn {
+        width: 100%;
+        margin: 5px 0;
+        padding: 12px;
+        font-size: 16px;
+    }
+}
+
+/* Bulk Actions Styling */
+.bulk-actions {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 15px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.form-check-input {
+    cursor: pointer;
+}
+
+.form-check-label {
+    cursor: pointer;
+    user-select: none;
+}
+
 /* Custom Scrollbar */
 .bookings-list::-webkit-scrollbar {
     width: 8px;
