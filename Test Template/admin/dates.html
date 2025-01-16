@@ -53,6 +53,21 @@
         let calendar;
         let selectedDates = new Set();
 
+        function showMessage(message, isError = false) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${isError ? 'danger' : 'success'} alert-dismissible fade show`;
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            `;
+            document.querySelector('.container').insertBefore(alertDiv, document.querySelector('.row'));
+            
+            // Auto dismiss after 5 seconds
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const calendarEl = document.getElementById('calendar');
             calendar = new FullCalendar.Calendar(calendarEl, {
@@ -87,13 +102,16 @@
         async function addDates() {
             const adminKey = document.getElementById('adminKey').value;
             if (!adminKey) {
-                alert('Please enter the admin key');
+                showMessage('Please enter the admin key', true);
                 return;
             }
 
             try {
                 const response = await fetch('/.netlify/functions/manage-dates', {
                     method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
                     body: JSON.stringify({
                         action: 'add',
                         dates: Array.from(selectedDates),
@@ -103,29 +121,33 @@
 
                 const result = await response.json();
                 if (response.ok) {
-                    alert('Dates added successfully');
+                    showMessage('Dates added successfully');
                     selectedDates.clear();
                     refreshCalendar();
                     refreshDates();
                 } else {
-                    alert(result.error || 'Failed to add dates');
+                    showMessage(result.error || 'Failed to add dates', true);
+                    console.error('Error details:', result);
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('Failed to add dates');
+                showMessage('Failed to add dates: ' + error.message, true);
             }
         }
 
         async function refreshDates() {
             const adminKey = document.getElementById('adminKey').value;
             if (!adminKey) {
-                alert('Please enter the admin key');
+                showMessage('Please enter the admin key', true);
                 return;
             }
 
             try {
                 const response = await fetch('/.netlify/functions/manage-dates', {
                     method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
                     body: JSON.stringify({
                         action: 'list',
                         dates: [],
@@ -147,21 +169,22 @@
                             `).join('') + 
                             '</ul>';
                     } else {
-                        dateList.innerHTML = '<p>No available dates found</p>';
+                        dateList.innerHTML = '<p class="text-muted">No available dates found</p>';
                     }
                 } else {
                     dateList.innerHTML = '<p class="text-danger">Error: ' + (result.error || 'Failed to fetch dates') + '</p>';
+                    console.error('Error details:', result);
                 }
             } catch (error) {
                 console.error('Error:', error);
-                document.getElementById('dateList').innerHTML = '<p class="text-danger">Failed to fetch dates</p>';
+                document.getElementById('dateList').innerHTML = '<p class="text-danger">Failed to fetch dates: ' + error.message + '</p>';
             }
         }
 
         async function removeDate(date) {
             const adminKey = document.getElementById('adminKey').value;
             if (!adminKey) {
-                alert('Please enter the admin key');
+                showMessage('Please enter the admin key', true);
                 return;
             }
 
@@ -169,6 +192,9 @@
                 try {
                     const response = await fetch('/.netlify/functions/manage-dates', {
                         method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
                         body: JSON.stringify({
                             action: 'remove',
                             dates: [date],
@@ -178,14 +204,15 @@
 
                     const result = await response.json();
                     if (response.ok) {
-                        alert('Date removed successfully');
+                        showMessage('Date removed successfully');
                         refreshDates();
                     } else {
-                        alert(result.error || 'Failed to remove date');
+                        showMessage(result.error || 'Failed to remove date', true);
+                        console.error('Error details:', result);
                     }
                 } catch (error) {
                     console.error('Error:', error);
-                    alert('Failed to remove date');
+                    showMessage('Failed to remove date: ' + error.message, true);
                 }
             }
         }
