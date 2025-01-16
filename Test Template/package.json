@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Excelsior Cleaning Services Website",
   "scripts": {
-    "build": "echo 'No build step needed'",
-    "dev": "echo 'No dev step needed'"
+    "build": "cd functions/get-available-dates && npm install && cd ../manage-dates && npm install"
+  },
+  "dependencies": {
+    "mongodb": "^5.7.0"
   }
 }
