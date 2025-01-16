@@ -284,58 +284,47 @@ Excelsior Cleaning Services: La limpieza profesional llevada a la perfección</p
             </div>
             <div class="row">
                 <div class="col-lg-6">
-                    <div class="contact-form">
-                        <form id="booking-form" name="booking" method="POST" data-netlify="true">
-                            <input type="hidden" name="form-name" value="booking">
-                            <div class="form-group mb-3">
-                                <label data-es="Fecha Seleccionada" data-en="Selected Date">Fecha Seleccionada</label>
-                                <input type="text" id="selected-date" name="selected-date" class="form-control" readonly required>
+                    <div class="form-container">
+                        <form id="bookingForm" class="booking-form">
+                            <h2>RESERVAR SERVICIO</h2>
+                            <h3>Solicitar Cotización</h3>
+                            
+                            <div class="form-group">
+                                <label for="selectedDate">Fecha Seleccionada</label>
+                                <input type="date" id="selectedDate" class="form-control" required>
+                                <small id="dateMessage" class="form-text text-muted">Por favor seleccione una fecha disponible</small>
                             </div>
-                            <div class="form-group mb-3">
-                                <label data-es="Tipo de Servicio" data-en="Service Type">Tipo de Servicio</label>
-                                <select name="service-type" class="form-control" required>
-                                    <option value="" data-es="Seleccione un servicio" data-en="Select a service">Seleccione un servicio</option>
-                                    <option value="residential" data-es="Limpieza Residencial" data-en="Residential Cleaning">Limpieza Residencial</option>
-                                    <option value="commercial" data-es="Limpieza Comercial" data-en="Commercial Cleaning">Limpieza Comercial</option>
-                                    <option value="office" data-es="Limpieza de Oficinas" data-en="Office Cleaning">Limpieza de Oficinas</option>
+
+                            <div class="form-group">
+                                <label for="serviceType">Tipo de Servicio</label>
+                                <select id="serviceType" class="form-control" required>
+                                    <option value="Limpieza Residencial">Limpieza Residencial</option>
+                                    <option value="Limpieza Comercial">Limpieza Comercial</option>
+                                    <option value="Limpieza Profunda">Limpieza Profunda</option>
                                 </select>
                             </div>
-                            <div class="form-group mb-3">
-                                <label data-es="Nombre Completo" data-en="Full Name">Nombre Completo</label>
-                                <input type="text" name="name" class="form-control" required>
+
+                            <div class="form-group">
+                                <label for="fullName">Nombre Completo</label>
+                                <input type="text" id="fullName" class="form-control" required>
                             </div>
-                            <div class="form-group mb-3">
-                                <label data-es="Correo Electrónico" data-en="Email">Correo Electrónico</label>
-                                <input type="email" name="email" class="form-control" required>
+
+                            <div class="form-group">
+                                <label for="email">Correo Electrónico</label>
+                                <input type="email" id="email" class="form-control" required>
                             </div>
-                            <div class="form-group mb-3">
-                                <label data-es="Teléfono" data-en="Phone">Teléfono</label>
-                                <input type="tel" name="phone" class="form-control" required>
+
+                            <div class="form-group">
+                                <label for="phone">Teléfono</label>
+                                <input type="tel" id="phone" class="form-control" required>
                             </div>
-                            <div class="form-group mb-3">
-                                <label data-es="Dirección" data-en="Address">Dirección</label>
-                                <input type="text" name="address" class="form-control" required>
+
+                            <div class="form-group">
+                                <label for="address">Dirección</label>
+                                <input type="text" id="address" class="form-control" required>
                             </div>
-                            <div class="form-group mb-3">
-                                <label data-es="Servicios Adicionales" data-en="Additional Services">Servicios Adicionales</label>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="additional-services[]" value="windows">
-                                    <label class="form-check-label" data-es="Limpieza de Ventanas" data-en="Window Cleaning">Limpieza de Ventanas</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="additional-services[]" value="carpet">
-                                    <label class="form-check-label" data-es="Limpieza de Alfombras" data-en="Carpet Cleaning">Limpieza de Alfombras</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="additional-services[]" value="disinfection">
-                                    <label class="form-check-label" data-es="Desinfección" data-en="Disinfection">Desinfección</label>
-                                </div>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label data-es="Mensaje" data-en="Message">Mensaje</label>
-                                <textarea name="message" class="form-control" rows="4"></textarea>
-                            </div>
-                            <button type="submit" class="pp-btn w-100" data-es="Enviar Solicitud" data-en="Send Request">Enviar Solicitud</button>
+
+                            <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
                         </form>
                     </div>
                 </div>
@@ -350,6 +339,79 @@ Excelsior Cleaning Services: La limpieza profesional llevada a la perfección</p
             </div>
         </div>
     </section>
+
+    <script>
+    async function loadAvailableDates() {
+        try {
+            const response = await fetch('/.netlify/functions/manage-dates', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    action: 'list',
+                    dates: []
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch available dates');
+            }
+
+            const result = await response.json();
+            const availableDates = result.dates.map(d => d.date || d);
+            
+            // Get the date input element
+            const dateInput = document.getElementById('selectedDate');
+            
+            // Store available dates for validation
+            dateInput.availableDates = new Set(availableDates);
+            
+            // Set min date to today
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.min = today;
+            
+            // Add event listener for date validation
+            dateInput.addEventListener('change', function() {
+                const selectedDate = this.value;
+                const dateMessage = document.getElementById('dateMessage');
+                
+                if (!this.availableDates.has(selectedDate)) {
+                    dateMessage.textContent = 'Esta fecha no está disponible. Por favor seleccione otra fecha.';
+                    dateMessage.style.color = 'red';
+                    this.value = '';
+                } else {
+                    dateMessage.textContent = 'Fecha disponible';
+                    dateMessage.style.color = 'green';
+                }
+            });
+        } catch (error) {
+            console.error('Error loading available dates:', error);
+        }
+    }
+
+    // Load available dates when the page loads
+    document.addEventListener('DOMContentLoaded', loadAvailableDates);
+
+    // Handle form submission
+    document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = {
+            date: document.getElementById('selectedDate').value,
+            serviceType: document.getElementById('serviceType').value,
+            fullName: document.getElementById('fullName').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            address: document.getElementById('address').value
+        };
+
+        // Here you can add code to submit the form data to your backend
+        console.log('Form submitted:', formData);
+        alert('Solicitud enviada con éxito! Nos pondremos en contacto pronto.');
+        this.reset();
+    });
+    </script>
 
     <!-- Footer -->
     <footer class="pp-footer">
