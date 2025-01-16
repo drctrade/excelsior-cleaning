@@ -1,9 +1,0 @@
-{
-  "name": "submit-booking",
-  "version": "1.0.0",
-  "description": "Submit booking function for Excelsior Cleaning",
-  "main": "submit-booking.js",
-  "dependencies": {
-    "nodemailer": "^6.9.1"
-  }
-}
