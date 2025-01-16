@@ -1,7 +1,5 @@
-const { MongoClient } = require('mongodb');
-
-const uri = process.env.MONGODB_URI;
-const client = new MongoClient(uri);
+// Simple in-memory storage for available dates
+let availableDates = [];
 
 exports.handler = async function(event, context) {
     // Handle preflight requests
@@ -28,48 +26,16 @@ exports.handler = async function(event, context) {
     }
 
     try {
-        const { action, dates, adminKey } = JSON.parse(event.body);
-
-        // Verify admin key
-        if (adminKey !== process.env.ADMIN_KEY) {
-            return {
-                statusCode: 401,
-                headers: {
-                    'Access-Control-Allow-Origin': '*'
-                },
-                body: JSON.stringify({ error: 'Unauthorized' })
-            };
-        }
-
-        await client.connect();
-        console.log('Connected to MongoDB');
-        
-        const database = client.db('excelsior');
-        const datesCollection = database.collection('available_dates');
+        const { action, dates } = JSON.parse(event.body);
 
         switch (action) {
             case 'add':
                 console.log('Adding dates:', dates);
                 // Add new dates
-                const datesToAdd = dates.map(date => ({
-                    date: date,
-                    createdAt: new Date()
-                }));
-                await datesCollection.insertMany(datesToAdd);
-                return {
-                    statusCode: 200,
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*'
-                    },
-                    body: JSON.stringify({ message: 'Dates added successfully' })
-                };
-
-            case 'remove':
-                console.log('Removing dates:', dates);
-                // Remove dates
-                await datesCollection.deleteMany({
-                    date: { $in: dates }
+                dates.forEach(date => {
+                    if (!availableDates.includes(date)) {
+                        availableDates.push(date);
+                    }
                 });
                 return {
                     statusCode: 200,
@@ -77,20 +43,39 @@ exports.handler = async function(event, context) {
                         'Content-Type': 'application/json',
                         'Access-Control-Allow-Origin': '*'
                     },
-                    body: JSON.stringify({ message: 'Dates removed successfully' })
+                    body: JSON.stringify({
+                        message: 'Dates added successfully',
+                        dates: availableDates
+                    })
                 };
 
-            case 'list':
-                console.log('Listing dates');
-                // List all dates
-                const availableDates = await datesCollection.find({}).toArray();
+            case 'remove':
+                console.log('Removing dates:', dates);
+                // Remove dates
+                availableDates = availableDates.filter(d => !dates.includes(d));
                 return {
                     statusCode: 200,
                     headers: {
                         'Content-Type': 'application/json',
                         'Access-Control-Allow-Origin': '*'
                     },
-                    body: JSON.stringify({ dates: availableDates })
+                    body: JSON.stringify({
+                        message: 'Dates removed successfully',
+                        dates: availableDates
+                    })
+                };
+
+            case 'list':
+                console.log('Listing dates');
+                return {
+                    statusCode: 200,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                    },
+                    body: JSON.stringify({
+                        dates: availableDates.map(date => ({ date }))
+                    })
                 };
 
             default:
@@ -103,7 +88,7 @@ exports.handler = async function(event, context) {
                 };
         }
     } catch (error) {
-        console.error('Database error:', error);
+        console.error('Error:', error);
         return {
             statusCode: 500,
             headers: {
@@ -111,7 +96,5 @@ exports.handler = async function(event, context) {
             },
             body: JSON.stringify({ error: 'Internal server error', details: error.message })
         };
-    } finally {
-        await client.close();
     }
 };

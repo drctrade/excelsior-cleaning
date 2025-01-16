@@ -23,10 +23,6 @@
                     <div class="card-body">
                         <h5 class="card-title">Add Available Dates</h5>
                         <div class="mb-3">
-                            <label for="adminKey" class="form-label">Admin Key</label>
-                            <input type="password" class="form-control" id="adminKey" required>
-                        </div>
-                        <div class="mb-3">
                             <label class="form-label">Select Dates</label>
                             <div id="calendar"></div>
                         </div>
@@ -100,12 +96,6 @@
         }
 
         async function addDates() {
-            const adminKey = document.getElementById('adminKey').value;
-            if (!adminKey) {
-                showMessage('Please enter the admin key', true);
-                return;
-            }
-
             try {
                 const response = await fetch('/.netlify/functions/manage-dates', {
                     method: 'POST',
@@ -114,8 +104,7 @@
                     },
                     body: JSON.stringify({
                         action: 'add',
-                        dates: Array.from(selectedDates),
-                        adminKey: adminKey
+                        dates: Array.from(selectedDates)
                     })
                 });
 
@@ -124,7 +113,7 @@
                     showMessage('Dates added successfully');
                     selectedDates.clear();
                     refreshCalendar();
-                    refreshDates();
+                    updateDateList(result.dates);
                 } else {
                     showMessage(result.error || 'Failed to add dates', true);
                     console.error('Error details:', result);
@@ -136,12 +125,6 @@
         }
 
         async function refreshDates() {
-            const adminKey = document.getElementById('adminKey').value;
-            if (!adminKey) {
-                showMessage('Please enter the admin key', true);
-                return;
-            }
-
             try {
                 const response = await fetch('/.netlify/functions/manage-dates', {
                     method: 'POST',
@@ -150,29 +133,15 @@
                     },
                     body: JSON.stringify({
                         action: 'list',
-                        dates: [],
-                        adminKey: adminKey
+                        dates: []
                     })
                 });
 
                 const result = await response.json();
                 if (response.ok) {
-                    const dateList = document.getElementById('dateList');
-                    if (result.dates && result.dates.length > 0) {
-                        const dates = result.dates.map(d => d.date).sort();
-                        dateList.innerHTML = '<ul class="list-group">' + 
-                            dates.map(date => `
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    ${date}
-                                    <button class="btn btn-danger btn-sm" onclick="removeDate('${date}')">Remove</button>
-                                </li>
-                            `).join('') + 
-                            '</ul>';
-                    } else {
-                        dateList.innerHTML = '<p class="text-muted">No available dates found</p>';
-                    }
+                    updateDateList(result.dates);
                 } else {
-                    dateList.innerHTML = '<p class="text-danger">Error: ' + (result.error || 'Failed to fetch dates') + '</p>';
+                    document.getElementById('dateList').innerHTML = '<p class="text-danger">Error: ' + (result.error || 'Failed to fetch dates') + '</p>';
                     console.error('Error details:', result);
                 }
             } catch (error) {
@@ -181,13 +150,24 @@
             }
         }
 
-        async function removeDate(date) {
-            const adminKey = document.getElementById('adminKey').value;
-            if (!adminKey) {
-                showMessage('Please enter the admin key', true);
-                return;
+        function updateDateList(dates) {
+            const dateList = document.getElementById('dateList');
+            if (dates && dates.length > 0) {
+                const sortedDates = dates.map(d => d.date || d).sort();
+                dateList.innerHTML = '<ul class="list-group">' + 
+                    sortedDates.map(date => `
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            ${date}
+                            <button class="btn btn-danger btn-sm" onclick="removeDate('${date}')">Remove</button>
+                        </li>
+                    `).join('') + 
+                    '</ul>';
+            } else {
+                dateList.innerHTML = '<p class="text-muted">No available dates found</p>';
             }
+        }
 
+        async function removeDate(date) {
             if (confirm(`Are you sure you want to remove ${date}?`)) {
                 try {
                     const response = await fetch('/.netlify/functions/manage-dates', {
@@ -197,15 +177,14 @@
                         },
                         body: JSON.stringify({
                             action: 'remove',
-                            dates: [date],
-                            adminKey: adminKey
+                            dates: [date]
                         })
                     });
 
                     const result = await response.json();
                     if (response.ok) {
                         showMessage('Date removed successfully');
-                        refreshDates();
+                        updateDateList(result.dates);
                     } else {
                         showMessage(result.error || 'Failed to remove date', true);
                         console.error('Error details:', result);
