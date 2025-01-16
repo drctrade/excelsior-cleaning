@@ -1,0 +1,9 @@
+{
+  "name": "manage-dates",
+  "version": "1.0.0",
+  "description": "Netlify function to manage available dates",
+  "main": "manage-dates.js",
+  "dependencies": {
+    "mongodb": "^5.7.0"
+  }
+}
