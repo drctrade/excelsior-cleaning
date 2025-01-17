@@ -21,87 +21,47 @@ var calendar = new FullCalendar.Calendar(calendarEl, {
 });
 calendar.render();
 
-// Initialize calendar with flatpickr
-function initializeCalendar() {
-    calendar = flatpickr("#calendar", {
-        mode: "multiple",
-        dateFormat: "Y-m-d",
-        enable: [],
-        inline: true,
-        monthSelectorType: "static",
-        prevArrow: "<span class='fas fa-chevron-left'></span>",
-        nextArrow: "<span class='fas fa-chevron-right'></span>",
-        onChange: function(selectedDates, dateStr, instance) {
-            updateSelectedDates(selectedDates);
+// Function to handle bulk month selection
+function handleMonthSelection(e) {
+    const currentDate = new Date();
+    const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+    const dates = [];
+
+    if (e.target.checked) {
+        // Select all days in current month
+        for (let d = new Date(firstDay); d <= lastDay; d.setDate(d.getDate() + 1)) {
+            dates.push(new Date(d));
         }
-    });
-
-    // Add select all month functionality
-    document.getElementById('selectAllMonth').addEventListener('change', function(e) {
-        const currentMonth = calendar.currentMonth;
-        const currentYear = calendar.currentYear;
-        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-        
-        if (e.target.checked) {
-            // Select all days in current month
-            for (let day = 1; day <= daysInMonth; day++) {
-                const date = new Date(currentYear, currentMonth, day);
-                if (!calendar.selectedDates.some(d => d.toDateString() === date.toDateString())) {
-                    calendar.selectedDates.push(date);
-                }
-            }
-        } else {
-            // Deselect all days in current month
-            calendar.selectedDates = calendar.selectedDates.filter(date => {
-                return date.getMonth() !== currentMonth || date.getFullYear() !== currentYear;
-            });
-        }
-        
-        calendar.redraw();
-        updateSelectedDates(calendar.selectedDates);
-    });
-
-    // Update select all checkbox when month changes
-    calendar.config.onMonthChange = function(selectedDates, dateStr, instance) {
-        updateSelectAllCheckbox();
-    };
-}
-
-// Update select all checkbox based on current month selection
-function updateSelectAllCheckbox() {
-    const currentMonth = calendar.currentMonth;
-    const currentYear = calendar.currentYear;
-    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-    
-    let allSelected = true;
-    for (let day = 1; day <= daysInMonth; day++) {
-        const date = new Date(currentYear, currentMonth, day);
-        if (!calendar.selectedDates.some(d => d.toDateString() === date.toDateString())) {
-            allSelected = false;
-            break;
-        }
-    }
-    
-    document.getElementById('selectAllMonth').checked = allSelected;
-}
-
-// Add mobile-friendly improvements
-function addMobileImprovements() {
-    const calendarElement = document.querySelector('.flatpickr-calendar');
-    if (calendarElement) {
-        calendarElement.style.maxWidth = '100%';
-        calendarElement.style.fontSize = '16px'; // Prevent zoom on mobile
-        
-        // Make day cells larger on mobile
-        const dayCells = calendarElement.querySelectorAll('.flatpickr-day');
-        dayCells.forEach(cell => {
-            cell.style.minHeight = '44px'; // Minimum touch target size
-            cell.style.lineHeight = '44px';
+        calendar.addEvent({
+            start: firstDay,
+            end: lastDay,
+            display: 'background',
+            allDay: true
         });
     }
+
+    // Update the calendar with selected dates
+    calendar.getEvents().forEach(event => {
+        if (event.start >= firstDay && event.end <= lastDay) {
+            event.remove();
+        }
+    });
+
+    if (dates.length > 0) {
+        dates.forEach(date => {
+            calendar.addEvent({
+                start: date,
+                allDay: true
+            });
+        });
+    }
+
+    // Save changes
+    saveAvailability();
 }
 
-// Initialize everything
+// Initialize calendar and event listeners
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize Admin Calendar
     var calendarEl = document.getElementById('admin-calendar');
@@ -125,6 +85,9 @@ document.addEventListener('DOMContentLoaded', function() {
         events: loadBlockedDates()
     });
     calendar.render();
+
+    // Add event listener for select all month checkbox
+    document.getElementById('selectAllMonth').addEventListener('change', handleMonthSelection);
 
     // Handle Block Dates
     document.getElementById('block-dates-btn').addEventListener('click', function() {
@@ -171,6 +134,86 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load Recent Bookings
     loadRecentBookings();
 
+    // Initialize calendar with flatpickr
+    function initializeCalendar() {
+        calendar = flatpickr("#calendar", {
+            mode: "multiple",
+            dateFormat: "Y-m-d",
+            enable: [],
+            inline: true,
+            monthSelectorType: "static",
+            prevArrow: "<span class='fas fa-chevron-left'></span>",
+            nextArrow: "<span class='fas fa-chevron-right'></span>",
+            onChange: function(selectedDates, dateStr, instance) {
+                updateSelectedDates(selectedDates);
+            }
+        });
+
+        // Add select all month functionality
+        document.getElementById('selectAllMonth').addEventListener('change', function(e) {
+            const currentMonth = calendar.currentMonth;
+            const currentYear = calendar.currentYear;
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            
+            if (e.target.checked) {
+                // Select all days in current month
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const date = new Date(currentYear, currentMonth, day);
+                    if (!calendar.selectedDates.some(d => d.toDateString() === date.toDateString())) {
+                        calendar.selectedDates.push(date);
+                    }
+                }
+            } else {
+                // Deselect all days in current month
+                calendar.selectedDates = calendar.selectedDates.filter(date => {
+                    return date.getMonth() !== currentMonth || date.getFullYear() !== currentYear;
+                });
+            }
+            
+            calendar.redraw();
+            updateSelectedDates(calendar.selectedDates);
+        });
+
+        // Update select all checkbox when month changes
+        calendar.config.onMonthChange = function(selectedDates, dateStr, instance) {
+            updateSelectAllCheckbox();
+        };
+    }
+
+    // Update select all checkbox based on current month selection
+    function updateSelectAllCheckbox() {
+        const currentMonth = calendar.currentMonth;
+        const currentYear = calendar.currentYear;
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        
+        let allSelected = true;
+        for (let day = 1; day <= daysInMonth; day++) {
+            const date = new Date(currentYear, currentMonth, day);
+            if (!calendar.selectedDates.some(d => d.toDateString() === date.toDateString())) {
+                allSelected = false;
+                break;
+            }
+        }
+        
+        document.getElementById('selectAllMonth').checked = allSelected;
+    }
+
+    // Add mobile-friendly improvements
+    function addMobileImprovements() {
+        const calendarElement = document.querySelector('.flatpickr-calendar');
+        if (calendarElement) {
+            calendarElement.style.maxWidth = '100%';
+            calendarElement.style.fontSize = '16px'; // Prevent zoom on mobile
+            
+            // Make day cells larger on mobile
+            const dayCells = calendarElement.querySelectorAll('.flatpickr-day');
+            dayCells.forEach(cell => {
+                cell.style.minHeight = '44px'; // Minimum touch target size
+                cell.style.lineHeight = '44px';
+            });
+        }
+    }
+
     initializeCalendar();
     addMobileImprovements();
     
@@ -178,32 +221,46 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('resize', addMobileImprovements);
 });
 
-// Function to load blocked dates from Netlify
-function loadBlockedDates() {
-    // This will be replaced with actual Netlify function call
-    return [];
+// Function to save availability to Netlify
+async function saveAvailability() {
+    const events = calendar.getEvents();
+    const dates = events.map(event => event.start.toISOString().split('T')[0]);
+
+    try {
+        const response = await fetch('/.netlify/functions/update-dates', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ dates: dates })
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to save dates');
+        }
+
+        // Show success message
+        alert('Fechas guardadas exitosamente');
+    } catch (error) {
+        console.error('Error saving dates:', error);
+        alert('Error al guardar las fechas');
+    }
 }
 
-// Function to save availability to Netlify
-function saveAvailability() {
-    const events = calendar.getEvents().map(event => ({
-        title: event.title,
-        start: event.start,
-        end: event.end
-    }));
-
-    fetch('/.netlify/functions/save-availability', {
-        method: 'POST',
-        body: JSON.stringify({ events: events })
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Availability saved');
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Error al guardar disponibilidad');
-    });
+// Function to load blocked dates from Netlify
+async function loadBlockedDates() {
+    try {
+        const response = await fetch('/.netlify/functions/get-dates');
+        const data = await response.json();
+        
+        return data.dates.map(date => ({
+            start: date,
+            allDay: true
+        }));
+    } catch (error) {
+        console.error('Error loading dates:', error);
+        return [];
+    }
 }
 
 // Function to load recent bookings
