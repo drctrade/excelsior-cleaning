@@ -22,7 +22,7 @@ var calendar = new FullCalendar.Calendar(calendarEl, {
 calendar.render();
 
 // Function to handle bulk month selection
-function handleMonthSelection(e) {
+async function handleMonthSelection(e) {
     const currentDate = new Date();
     const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
     const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
@@ -31,41 +31,85 @@ function handleMonthSelection(e) {
     if (e.target.checked) {
         // Select all days in current month
         for (let d = new Date(firstDay); d <= lastDay; d.setDate(d.getDate() + 1)) {
-            dates.push(new Date(d));
+            dates.push(new Date(d).toISOString().split('T')[0]);
         }
-        calendar.addEvent({
-            start: firstDay,
-            end: lastDay,
-            display: 'background',
-            allDay: true
-        });
     }
 
-    // Update the calendar with selected dates
-    calendar.getEvents().forEach(event => {
-        if (event.start >= firstDay && event.end <= lastDay) {
-            event.remove();
-        }
-    });
+    try {
+        const response = await fetch('/.netlify/functions/update-dates', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ dates: dates })
+        });
 
-    if (dates.length > 0) {
-        dates.forEach(date => {
+        if (!response.ok) {
+            const errorData = await response.json();
+            if (response.status === 409) {
+                // Handle conflicting dates
+                alert('Some dates are already booked: ' + errorData.conflictingDates.join(', '));
+                e.target.checked = false;
+                return;
+            }
+            throw new Error(errorData.message || 'Failed to update dates');
+        }
+
+        // Refresh calendar display
+        await loadAvailableDates();
+        calendar.refetchEvents();
+        
+        // Show success message
+        alert('Fechas actualizadas exitosamente');
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error al actualizar las fechas: ' + error.message);
+        e.target.checked = false;
+    }
+}
+
+// Function to load available dates
+async function loadAvailableDates() {
+    try {
+        const response = await fetch('/.netlify/functions/get-dates');
+        if (!response.ok) {
+            throw new Error('Failed to load dates');
+        }
+        
+        const data = await response.json();
+        
+        // Clear existing events
+        calendar.removeAllEvents();
+        
+        // Add available dates
+        data.available.forEach(date => {
             calendar.addEvent({
                 start: date,
-                allDay: true
+                allDay: true,
+                className: 'available-date'
             });
         });
+        
+        // Add booked dates
+        data.booked.forEach(date => {
+            calendar.addEvent({
+                start: date,
+                allDay: true,
+                className: 'booked-date',
+                editable: false
+            });
+        });
+    } catch (error) {
+        console.error('Error loading dates:', error);
+        alert('Error al cargar las fechas');
     }
-
-    // Save changes
-    saveAvailability();
 }
 
 // Initialize calendar and event listeners
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     // Initialize Admin Calendar
     var calendarEl = document.getElementById('admin-calendar');
-    var calendar = new FullCalendar.Calendar(calendarEl, {
+    calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         headerToolbar: {
             left: 'prev,next today',
@@ -75,17 +119,47 @@ document.addEventListener('DOMContentLoaded', function() {
         selectable: true,
         selectMirror: true,
         editable: true,
-        eventClick: function(info) {
-            if (confirm('¿Desea eliminar este bloqueo?')) {
-                info.event.remove();
-                // Save changes to Netlify
-                saveAvailability();
+        eventClick: async function(info) {
+            if (info.event.classNames.includes('booked-date')) {
+                alert('Esta fecha ya está reservada');
+                return;
+            }
+            
+            if (confirm('¿Desea eliminar esta fecha?')) {
+                try {
+                    const response = await fetch('/.netlify/functions/update-dates', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            dates: calendar.getEvents()
+                                .filter(e => e !== info.event && e.classNames.includes('available-date'))
+                                .map(e => e.start.toISOString().split('T')[0])
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to update dates');
+                    }
+
+                    info.event.remove();
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Error al eliminar la fecha');
+                }
             }
         },
-        events: loadBlockedDates()
+        eventClassNames: function(arg) {
+            return arg.event.classNames;
+        }
     });
+    
     calendar.render();
-
+    
+    // Load initial dates
+    await loadAvailableDates();
+    
     // Add event listener for select all month checkbox
     document.getElementById('selectAllMonth').addEventListener('change', handleMonthSelection);
 
