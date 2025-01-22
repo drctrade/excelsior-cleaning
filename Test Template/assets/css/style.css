@@ -1129,3 +1129,57 @@ body {
 .modal-body li {
     margin-bottom: 0.5rem;
 }
+
+/* Instagram QR Code Styles */
+.social-qr {
+    text-align: center;
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.qr-code {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+    display: block;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.social-qr p {
+    color: #fff;
+    margin: 10px 0;
+    font-size: 0.9rem;
+}
+
+.social-qr .btn-outline-light {
+    border-width: 2px;
+    font-weight: 600;
+    padding: 8px 20px;
+    transition: all 0.3s ease;
+}
+
+.social-qr .btn-outline-light:hover {
+    background: #fff;
+    color: #000;
+}
+
+.social-qr .fab {
+    margin-right: 8px;
+    font-size: 1.1rem;
+}
+
+@media (max-width: 767px) {
+    .social-qr {
+        margin: 20px auto;
+        max-width: 280px;
+    }
+    
+    .qr-code {
+        width: 120px;
+        height: 120px;
+    }
+}
