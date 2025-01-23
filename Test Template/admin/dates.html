@@ -5,17 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Available Dates - Excelsior Cleaning</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/core/main.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid/main.min.css" rel="stylesheet" />
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
     <style>
         body { padding: 20px; }
-        #calendar { margin-top: 20px; }
-        .date-list { max-height: 300px; overflow-y: auto; }
+        #calendar { 
+            margin-top: 20px;
+            height: 600px;
+        }
+        .date-list { 
+            max-height: 300px; 
+            overflow-y: auto; 
+        }
+        .fc-day-future { cursor: pointer; }
+        .fc-day-past { opacity: 0.5; }
+        .selected-date { 
+            background-color: #e3f2fd !important;
+        }
+        .alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1 class="mb-4">Manage Available Dates</h1>
+        
+        <div class="alert" role="alert"></div>
         
         <div class="row">
             <div class="col-md-6">
@@ -23,18 +42,15 @@
                     <div class="card-body">
                         <h5 class="card-title">Add Available Dates</h5>
                         <div class="mb-3">
-                            <label class="form-label">Select Dates</label>
-                            <div id="calendar"></div>
-                        </div>
-                        <div class="bulk-actions mt-4 mb-3">
-                            <div class="form-check">
+                            <div class="form-check mb-3">
                                 <input class="form-check-input" type="checkbox" id="selectAllMonth">
                                 <label class="form-check-label" for="selectAllMonth">
                                     Seleccionar Todo el Mes
                                 </label>
                             </div>
+                            <div id="calendar"></div>
                         </div>
-                        <button onclick="addDates()" class="btn btn-primary">Add Selected Dates</button>
+                        <button id="addDates" class="btn btn-primary">Add Selected Dates</button>
                     </div>
                 </div>
             </div>
@@ -43,36 +59,29 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Current Available Dates</h5>
-                        <div class="date-list" id="dateList">
-                            Loading...
+                        <button class="btn btn-secondary mb-3" onclick="refreshDates()">Refresh List</button>
+                        <div id="dateList" class="date-list">
+                            <!-- Dates will be listed here -->
                         </div>
-                        <button onclick="refreshDates()" class="btn btn-secondary mt-3">Refresh List</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core/main.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid/main.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction/main.min.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
     <script>
         let calendar;
         let selectedDates = new Set();
 
         function showMessage(message, isError = false) {
-            const alertDiv = document.createElement('div');
-            alertDiv.className = `alert alert-${isError ? 'danger' : 'success'} alert-dismissible fade show`;
-            alertDiv.innerHTML = `
-                ${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            `;
-            document.querySelector('.container').insertBefore(alertDiv, document.querySelector('.row'));
-            
-            // Auto dismiss after 5 seconds
+            const alert = document.querySelector('.alert');
+            alert.textContent = message;
+            alert.className = `alert ${isError ? 'alert-danger' : 'alert-success'}`;
+            alert.style.display = 'block';
             setTimeout(() => {
-                alertDiv.remove();
-            }, 5000);
+                alert.style.display = 'none';
+            }, 3000);
         }
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -84,7 +93,6 @@
                     const dateStr = info.startStr;
                     if (selectedDates.has(dateStr)) {
                         selectedDates.delete(dateStr);
-                        calendar.unselect();
                     } else {
                         selectedDates.add(dateStr);
                     }
@@ -93,119 +101,116 @@
             });
             calendar.render();
             refreshDates();
+
+            document.getElementById('selectAllMonth').addEventListener('change', function(e) {
+                const start = calendar.view.activeStart;
+                const end = calendar.view.activeEnd;
+                const current = new Date(start);
+
+                selectedDates.clear();
+                if (e.target.checked) {
+                    while (current < end) {
+                        selectedDates.add(current.toISOString().split('T')[0]);
+                        current.setDate(current.getDate() + 1);
+                    }
+                }
+                refreshCalendar();
+            });
         });
 
         function refreshCalendar() {
-            calendar.removeAllEvents();
-            selectedDates.forEach(date => {
-                calendar.addEvent({
-                    start: date,
-                    display: 'background',
-                    backgroundColor: '#007bff'
-                });
+            const dayEls = document.querySelectorAll('.fc-day');
+            dayEls.forEach(el => {
+                const date = el.getAttribute('data-date');
+                if (selectedDates.has(date)) {
+                    el.classList.add('selected-date');
+                } else {
+                    el.classList.remove('selected-date');
+                }
             });
         }
 
         async function addDates() {
             try {
-                const response = await fetch('/.netlify/functions/manage-dates', {
+                const response = await fetch('/.netlify/functions/update-dates', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        action: 'add',
                         dates: Array.from(selectedDates)
                     })
                 });
 
-                const result = await response.json();
-                if (response.ok) {
-                    showMessage('Dates added successfully');
-                    selectedDates.clear();
-                    refreshCalendar();
-                    updateDateList(result.dates);
-                } else {
-                    showMessage(result.error || 'Failed to add dates', true);
-                    console.error('Error details:', result);
-                }
+                if (!response.ok) throw new Error('Failed to update dates');
+
+                showMessage('Dates added successfully');
+                selectedDates.clear();
+                refreshCalendar();
+                refreshDates();
             } catch (error) {
                 console.error('Error:', error);
-                showMessage('Failed to add dates: ' + error.message, true);
+                showMessage(error.message, true);
             }
         }
 
         async function refreshDates() {
             try {
-                const response = await fetch('/.netlify/functions/manage-dates', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        action: 'list',
-                        dates: []
-                    })
-                });
-
-                const result = await response.json();
-                if (response.ok) {
-                    updateDateList(result.dates);
-                } else {
-                    document.getElementById('dateList').innerHTML = '<p class="text-danger">Error: ' + (result.error || 'Failed to fetch dates') + '</p>';
-                    console.error('Error details:', result);
-                }
+                const response = await fetch('/.netlify/functions/get-dates');
+                if (!response.ok) throw new Error('Failed to fetch dates');
+                
+                const data = await response.json();
+                updateDateList(data.available);
             } catch (error) {
                 console.error('Error:', error);
-                document.getElementById('dateList').innerHTML = '<p class="text-danger">Failed to fetch dates: ' + error.message + '</p>';
+                showMessage(error.message, true);
             }
         }
 
         function updateDateList(dates) {
             const dateList = document.getElementById('dateList');
-            if (dates && dates.length > 0) {
-                const sortedDates = dates.map(d => d.date || d).sort();
-                dateList.innerHTML = '<ul class="list-group">' + 
-                    sortedDates.map(date => `
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            ${date}
-                            <button class="btn btn-danger btn-sm" onclick="removeDate('${date}')">Remove</button>
-                        </li>
-                    `).join('') + 
-                    '</ul>';
-            } else {
-                dateList.innerHTML = '<p class="text-muted">No available dates found</p>';
+            dateList.innerHTML = '';
+            
+            if (!dates || dates.length === 0) {
+                dateList.innerHTML = '<p>No dates available</p>';
+                return;
             }
+
+            dates.sort().forEach(date => {
+                const div = document.createElement('div');
+                div.className = 'd-flex justify-content-between align-items-center mb-2';
+                div.innerHTML = `
+                    <span>${new Date(date).toLocaleDateString()}</span>
+                    <button class="btn btn-sm btn-danger" onclick="removeDate('${date}')">Remove</button>
+                `;
+                dateList.appendChild(div);
+            });
         }
 
         async function removeDate(date) {
-            if (confirm(`Are you sure you want to remove ${date}?`)) {
-                try {
-                    const response = await fetch('/.netlify/functions/manage-dates', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            action: 'remove',
-                            dates: [date]
-                        })
-                    });
+            try {
+                const response = await fetch('/.netlify/functions/update-dates', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        dates: Array.from(selectedDates).filter(d => d !== date)
+                    })
+                });
 
-                    const result = await response.json();
-                    if (response.ok) {
-                        showMessage('Date removed successfully');
-                        updateDateList(result.dates);
-                    } else {
-                        showMessage(result.error || 'Failed to remove date', true);
-                        console.error('Error details:', result);
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    showMessage('Failed to remove date: ' + error.message, true);
-                }
+                if (!response.ok) throw new Error('Failed to remove date');
+
+                showMessage('Date removed successfully');
+                refreshDates();
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage(error.message, true);
             }
         }
+
+        // Add click handler for the add dates button
+        document.getElementById('addDates').addEventListener('click', addDates);
     </script>
 </body>
 </html>

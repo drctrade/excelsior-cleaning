@@ -1,0 +1,8 @@
+{
+  "name": "excelsior-functions",
+  "version": "1.0.0",
+  "description": "Netlify functions for Excelsior Cleaning Services",
+  "dependencies": {
+    "mongodb": "^5.0.0"
+  }
+}

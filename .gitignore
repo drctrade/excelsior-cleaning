@@ -4,3 +4,5 @@ node_modules/
 .vscode/
 *.log
 Thumbs.db
+Test Template/assets/video/excelsior-cleaning.mp4
+*.mp4
