@@ -1,0 +1,31 @@
+Alright, it's been 3 days or more we stopped this project.
+We need to complete it in 2 days.
+Let's proceed like this:
+1- The calendar and tthe admin calendar are the most challenging
+   step so far. Is it possible to simply use an integration of 
+   google calendar? If yes, give me the step bye step process 
+   please.
+
+2- I gave you the embeded code and the link of the video, it is
+   still not showing on the website. Can we please fix this?
+
+3- I feel that we have a path problem. All the hero pictures for the
+   slide show are not showing, here is the exact path where
+   they are saved, hero1.jpg hero2.jpg hero3.jpg: C:\Users\Darly\Desktop\Windsurf Websites\Excelsior Cleaning Services\Test Template\assets\images
+   
+4- Also, since we have the flotter image for the Whatsapp, remove it from the
+   footer, and remove the logo at the bottom right of the page.
+
+
+For Google Calendar integration, here's the step-by-step process:
+First, create a Google Cloud Project:
+Go to https://console.cloud.google.com/
+Create a new project
+Enable the Google Calendar API
+Get API credentials:
+In the Google Cloud Console, go to "Credentials"
+Click "Create Credentials" > "OAuth 2.0 Client ID"
+Choose "Web application"
+Add your domain to authorized JavaScript origins
+Add your domain + /oauth2callback to authorized redirect URIs
+Download the client configuration file
