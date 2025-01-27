@@ -281,118 +281,49 @@ Excelsior Cleaning Services: La limpieza profesional llevada a la perfección</p
             </div>
             <div class="row">
                 <div class="col-lg-6">
-                    <div class="form-container">
-                        <form id="bookingForm" class="booking-form" name="booking" method="POST" data-netlify="true" action="/thank-you.html">
-                            <input type="hidden" name="form-name" value="booking">
-                            <h2 data-es="RESERVAR SERVICIO" data-en="BOOK SERVICE">RESERVAR SERVICIO</h2>
-                            <h3 data-es="Solicitar Cotización" data-en="Request Quote">Solicitar Cotización</h3>
-                            
+                    <div class="booking-form">
+                        <form id="bookingForm">
                             <div class="form-group">
-                                <label for="selectedDate" data-es="Fecha Seleccionada" data-en="Selected Date">Fecha Seleccionada</label>
-                                <input type="date" id="selectedDate" name="date" class="form-control" required>
-                                <small id="dateMessage" class="form-text text-muted" 
-                                    data-es="Por favor seleccione una fecha disponible" 
-                                    data-en="Please select an available date">Por favor seleccione una fecha disponible</small>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                                <label for="name" data-es="Nombre Completo" data-en="Full Name">Nombre Completo</label>
                             </div>
-
                             <div class="form-group">
-                                <label for="serviceType" data-es="Tipo de Servicio" data-en="Service Type">Tipo de Servicio</label>
-                                <select id="serviceType" name="service-type" class="form-control" required>
-                                    <option value="Limpieza Residencial" data-es="Limpieza Residencial" data-en="Residential Cleaning">Limpieza Residencial</option>
-                                    <option value="Limpieza Comercial" data-es="Limpieza Comercial" data-en="Commercial Cleaning">Limpieza Comercial</option>
-                                    <option value="Limpieza Profunda" data-es="Limpieza Profunda" data-en="Deep Cleaning">Limpieza Profunda</option>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                                <label for="email" data-es="Correo Electrónico" data-en="Email">Correo Electrónico</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="tel" class="form-control" id="phone" name="phone" required>
+                                <label for="phone" data-es="Teléfono" data-en="Phone">Teléfono</label>
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control" id="service" name="service" required>
+                                    <option value="">Seleccione un servicio</option>
+                                    <option value="residential">Limpieza Residencial</option>
+                                    <option value="commercial">Limpieza Comercial</option>
+                                    <option value="deep">Limpieza Profunda</option>
                                 </select>
                             </div>
-
                             <div class="form-group">
-                                <label for="fullName" data-es="Nombre Completo" data-en="Full Name">Nombre Completo</label>
-                                <input type="text" id="fullName" name="full-name" class="form-control" required>
+                                <textarea class="form-control" id="message" name="message" rows="4"></textarea>
+                                <label for="message" data-es="Mensaje (Opcional)" data-en="Message (Optional)">Mensaje (Opcional)</label>
                             </div>
-
-                            <div class="form-group">
-                                <label for="email" data-es="Correo Electrónico" data-en="Email">Correo Electrónico</label>
-                                <input type="email" id="email" name="email" class="form-control" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="phone" data-es="Teléfono" data-en="Phone">Teléfono</label>
-                                <input type="tel" id="phone" name="phone" class="form-control" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="address" data-es="Dirección" data-en="Address">Dirección</label>
-                                <input type="text" id="address" name="address" class="form-control" required>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary" data-es="Enviar Solicitud" data-en="Submit Request">Enviar Solicitud</button>
+                            <button type="submit" class="pp-btn" data-es="Enviar Solicitud" data-en="Send Request">Enviar Solicitud</button>
                         </form>
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="booking-calendar">
-                        <div id="booking-calendar"></div>
-                    </div>
-                    <div class="contact-info mt-4">
-                        <img src="assets/images/contact.jpg" alt="Contact Us" class="img-fluid rounded">
-                    </div>
+                    <div id="calendar"></div>
+                    <button id="authorize_button" style="visibility: hidden">Authorize</button>
+                    <button id="signout_button" style="visibility: hidden">Sign Out</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <script>
-    async function loadAvailableDates() {
-        try {
-            const response = await fetch('/.netlify/functions/manage-dates', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    action: 'list',
-                    dates: []
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch available dates');
-            }
-
-            const result = await response.json();
-            const availableDates = result.dates.map(d => d.date || d);
-            
-            // Get the date input element
-            const dateInput = document.getElementById('selectedDate');
-            
-            // Store available dates for validation
-            dateInput.availableDates = new Set(availableDates);
-            
-            // Set min date to today
-            const today = new Date().toISOString().split('T')[0];
-            dateInput.min = today;
-            
-            // Add event listener for date validation
-            dateInput.addEventListener('change', function() {
-                const selectedDate = this.value;
-                const dateMessage = document.getElementById('dateMessage');
-                
-                if (!this.availableDates.has(selectedDate)) {
-                    dateMessage.textContent = 'Esta fecha no está disponible. Por favor seleccione otra fecha.';
-                    dateMessage.style.color = 'red';
-                    this.value = '';
-                } else {
-                    dateMessage.textContent = 'Fecha disponible';
-                    dateMessage.style.color = 'green';
-                }
-            });
-        } catch (error) {
-            console.error('Error loading available dates:', error);
-        }
-    }
-
-    // Load available dates when the page loads
-    document.addEventListener('DOMContentLoaded', loadAvailableDates);
-    </script>
+    <!-- Google Calendar API -->
+    <script src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+    <script src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+    <script src="assets/js/calendar.js"></script>
 
     <!-- Footer -->
     <footer class="pp-footer">
