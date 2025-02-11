@@ -597,7 +597,27 @@ body {
 
 /* Booking Section */
 .booking-section {
-    padding: 0;
+    background-color: var(--light-color);
+    padding: 80px 0;
+}
+
+.calendly-inline-widget {
+    min-width: 320px;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+.booking-form {
+    display: none;
+}
+
+#calendar, #authorize_button, #signout_button {
+    display: none;
 }
 
 .booking-section .row {

@@ -29,3 +29,22 @@ Choose "Web application"
 Add your domain to authorized JavaScript origins
 Add your domain + /oauth2callback to authorized redirect URIs
 Download the client configuration file
+
+
+
+Ok, I feel like we can't keep a line, everytime we are coming backward.
+I didn't ask you to change the floating instagram qr code on the right side
+while scrolling down the whole website, I just asked to put the 
+whatsapp one as it was in the previous version:
+
+1- I want the instagram and Whatsapp Qr-code floating on the right side of the 
+   website while scrolling down, as it was in the previous version.
+
+2- On the hero section, can you please add a 4th image, hero4.jpg on the
+   slideshow.
+
+3- The video is still not showing on the website, can you please find what is the 
+   real problem to fix it once for all?
+
+4- Review the whole website and make the footer clean and professional with all 
+   the internal links and legal links.
