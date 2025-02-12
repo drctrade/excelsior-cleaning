@@ -236,17 +236,19 @@ body {
 }
 
 .video-container {
-    max-width: 900px;
+    max-width: 960px; /* Standard 16:9 video width */
+    width: 100%;
     margin: 0 auto;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    border-radius: 15px;
+    border-radius: 8px;
     overflow: hidden;
 }
 
 .ratio-16x9 {
     position: relative;
     width: 100%;
-    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    padding-top: 56.25%; /* Exact 16:9 aspect ratio */
+    background-color: #000; /* Black background for letterboxing */
 }
 
 .ratio-16x9 iframe {
