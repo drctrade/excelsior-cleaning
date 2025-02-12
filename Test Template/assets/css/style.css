@@ -236,28 +236,28 @@ body {
 }
 
 .video-container {
-    max-width: 960px; /* Standard 16:9 video width */
-    width: 100%;
+    width: 960px;
+    height: 540px;
     margin: 0 auto;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    border-radius: 4px;
     overflow: hidden;
+    background-color: #000;
 }
 
-.ratio-16x9 {
-    position: relative;
-    width: 100%;
-    padding-top: 56.25%; /* Exact 16:9 aspect ratio */
-    background-color: #000; /* Black background for letterboxing */
-}
-
-.ratio-16x9 iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
+.video-container iframe {
     width: 100%;
     height: 100%;
     border: 0;
+}
+
+/* Make video responsive on smaller screens */
+@media (max-width: 992px) {
+    .video-container {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16/9;
+    }
 }
 
 /* Book Service Section - Remove white rectangle */
